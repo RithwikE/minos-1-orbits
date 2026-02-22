@@ -14,7 +14,7 @@ matplotlib.use('Agg')  # non-interactive backend
 import matplotlib.pyplot as plt
 import pykep as pk
 
-from utils import falcon_heavy_payload, append_to_csv, print_summary, OUTPUT_DIR
+from utils import falcon_heavy_payload, save_to_csv, print_summary, OUTPUT_DIR
 
 earth   = pk.planet.jpl_lp('earth')
 jupiter = pk.planet.jpl_lp('jupiter')
@@ -135,6 +135,7 @@ row = {
     'vinf_dep_kms':      f"{best_vinf_dep:.3f}",
     'delivered_mass_kg': f"{fh['estimated_kg']:.0f}",
     'total_dsm_kms':     '0.0000',
+    'dsm_per_leg_kms':   '',
     'vinf_arr_kms':      f"{best_vinf_arr:.3f}",
     'objective_kms':     f"{best_vinf_arr:.3f}",
     'flyby_bodies':      '',
@@ -148,7 +149,7 @@ row = {
     'ref_tof_years':     '~2.7',
     'ref_notes':         'Hohmann min-energy; C3≈77 rules out all LVs at mission mass',
 }
-append_to_csv(row)
+save_to_csv(row)
 print_summary(row)
 
 # %% Cell 8 — Final summary

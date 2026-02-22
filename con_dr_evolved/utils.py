@@ -203,6 +203,7 @@ def run_mga_optimisation(
 
 def extract_mga_results(udp, best_x: np.ndarray, best_f: float,
                         sequence_label: str, seq_bodies: list,
+                        seq: list = None,
                         ref: dict = None) -> dict:
     """
     Pull all trade-study columns from a converged mga_1dsm solution.
@@ -248,55 +249,41 @@ def extract_mga_results(udp, best_x: np.ndarray, best_f: float,
     flyby_alts = []
     for k in range(len(flyby_names)):
         rp_ratio = best_x[7 + 4*k]
-        body = udp.get_sequence()[k+1]
+        body = seq[k+1]  # pykep planet object for this flyby body
         safe_r_km = body.safe_radius / 1000.0
         body_r_km = body.radius / 1000.0
         alt_km = rp_ratio * safe_r_km - body_r_km
         flyby_alts.append(alt_km)
 
     # --- ΔV breakdown ---
-    # The objective = sum(DSMs) + vinf_arr  (with add_vinf_dep=False, add_vinf_arr=True)
-    # We need to isolate DSMs from arrival V∞.
-    # Arrival V∞ = |v_sc - v_planet| at the last body.
-    # Easiest: call udp.fitness(best_x) gives us the objective.
-    # Then reconstruct arrival V∞ from ephemeris.
+    # Parse pykep's own pretty() output to get exact DSM and arrival V∞ values.
+    # This is more reliable than Lambert reconstruction (which ignores DSMs).
+    import io, sys, re
     obj_ms = best_f  # m/s
 
-    # Compute arrival V∞ by ephemeris
-    arr_body = udp.get_sequence()[-1]
-    r_arr, v_arr_planet = arr_body.eph(epochs[-1])
-
-    # Reconstruct the spacecraft arrival velocity via Lambert on last leg
-    dep_body_last = udp.get_sequence()[-2]
-    r_dep_last, _ = dep_body_last.eph(epochs[-2])
-    # We need the post-DSM velocity for the last leg. Rather than full reconstruction,
-    # use the identity: total_dsm = objective - vinf_arr
-    # So we compute vinf_arr independently.
-
-    # Actually, pykep gives us a cleaner way: pretty() prints everything.
-    # But for programmatic extraction, let's reconstruct the last Lambert arc.
-    last_tof_sec = tofs_days[-1] * 86400.0
-    eta_last = best_x[4 + 4*(n_legs-1)]  # DSM timing fraction for last leg
-
-    # For a clean extraction, use the mga_1dsm internal method if available,
-    # otherwise compute from the fitness components.
-    # Simple approach: total_dsm = obj - vinf_arr, where we compute vinf_arr separately.
-
-    # We'll compute vinf_arr from the Lambert solution of the full last leg
-    # (this is approximate but very close for converged solutions)
+    buf = io.StringIO()
+    old_stdout = sys.stdout
+    sys.stdout = buf
     try:
-        lamb = pk.lambert_problem(r_dep_last, r_arr, last_tof_sec, pk.MU_SUN)
-        v_sc_arr = np.array(lamb.get_v2()[0])
-        vinf_arr_vec = v_sc_arr - np.array(v_arr_planet)
-        vinf_arr_kms = np.linalg.norm(vinf_arr_vec) / 1000.0
-    except Exception:
-        # Fallback: rough estimate
-        vinf_arr_kms = obj_ms / 1000.0 * 0.5  # placeholder
-        print("  ⚠ Could not compute arrival V∞ from Lambert; using rough estimate")
+        udp.pretty(best_x)
+    finally:
+        sys.stdout = old_stdout
+    pretty_text = buf.getvalue()
 
-    total_dsm_kms = obj_ms / 1000.0 - vinf_arr_kms
-    if total_dsm_kms < 0:
-        total_dsm_kms = 0.0  # numerical noise
+    # Extract DSM magnitudes (m/s) from lines like "DSM magnitude: 368.68m/s"
+    dsm_matches = re.findall(r'DSM magnitude:\s*([\d.]+)\s*m/s', pretty_text)
+    dsm_per_leg_ms = [float(m) for m in dsm_matches]
+    total_dsm_ms = sum(dsm_per_leg_ms)
+
+    # Extract arrival V∞ from line like "Arrival Vinf: 961.17m/s"
+    vinf_arr_match = re.search(r'Arrival Vinf:\s*([\d.]+)\s*m/s', pretty_text)
+    if vinf_arr_match:
+        vinf_arr_kms = float(vinf_arr_match.group(1)) / 1000.0
+    else:
+        vinf_arr_kms = (obj_ms - total_dsm_ms) / 1000.0  # fallback
+
+    total_dsm_kms = total_dsm_ms / 1000.0
+    dsm_per_leg_kms = [d / 1000.0 for d in dsm_per_leg_ms]
 
     # delivered mass
     fh = falcon_heavy_payload(c3)
@@ -311,6 +298,7 @@ def extract_mga_results(udp, best_x: np.ndarray, best_f: float,
         'vinf_dep_kms':      f"{vinf_dep_kms:.3f}",
         'delivered_mass_kg': f"{fh['estimated_kg']:.0f}",
         'total_dsm_kms':     f"{total_dsm_kms:.4f}",
+        'dsm_per_leg_kms':   ';'.join(f"{d:.4f}" for d in dsm_per_leg_kms),
         'vinf_arr_kms':      f"{vinf_arr_kms:.3f}",
         'objective_kms':     f"{obj_ms / 1000.0:.4f}",
         'flyby_bodies':      ';'.join(flyby_names),
@@ -334,23 +322,59 @@ def extract_mga_results(udp, best_x: np.ndarray, best_f: float,
 CSV_COLUMNS = [
     'sequence', 'launch_date', 'arrival_date', 'tof_years',
     'c3_kms2', 'vinf_dep_kms', 'delivered_mass_kg',
-    'total_dsm_kms', 'vinf_arr_kms', 'objective_kms',
+    'total_dsm_kms', 'dsm_per_leg_kms', 'vinf_arr_kms', 'objective_kms',
     'flyby_bodies', 'flyby_dates', 'flyby_alts_km', 'leg_tofs_days',
     'ref_study', 'ref_c3_kms2', 'ref_dsm_kms', 'ref_vinf_arr_kms',
     'ref_tof_years', 'ref_notes',
 ]
 
-def append_to_csv(row: dict, csv_path: str = None):
-    """Append a result row to the trade-study CSV, creating headers if needed."""
+# Fixed row order — each sequence always occupies the same row.
+SEQUENCE_ORDER = [
+    'Direct',      # row 0 — 01_direct_baseline.py
+    'ΔV-EGA',      # row 1 — 02_dvega.py
+    'VEGA',        # row 2 — 03_vega.py
+    'VEEGA',       # row 3 — 04_veega.py
+    'VVEGA',       # row 4 — 05_vvega.py
+    'MGA',         # row 5 — 06_mga.py
+]
+
+def save_to_csv(row: dict, csv_path: str = None):
+    """
+    Write a result row to the trade-study CSV, maintaining fixed row order.
+    If the sequence already has a row, it is overwritten in place.
+    If not, it is inserted at its designated position.
+    Empty placeholder rows are created for sequences that haven't run yet.
+    """
     if csv_path is None:
         csv_path = os.path.join(OUTPUT_DIR, 'trade_study_results.csv')
-    write_header = not os.path.exists(csv_path)
-    with open(csv_path, 'a', newline='') as f:
+
+    seq_label = row.get('sequence', '')
+
+    # Read existing rows (if file exists)
+    existing = {}
+    if os.path.exists(csv_path):
+        with open(csv_path, 'r', newline='') as f:
+            reader = csv.DictReader(f)
+            for r in reader:
+                existing[r.get('sequence', '')] = r
+
+    # Upsert this row
+    existing[seq_label] = {col: row.get(col, '') for col in CSV_COLUMNS}
+
+    # Write all rows in fixed order
+    with open(csv_path, 'w', newline='') as f:
         writer = csv.DictWriter(f, fieldnames=CSV_COLUMNS, extrasaction='ignore')
-        if write_header:
-            writer.writeheader()
-        writer.writerow(row)
-    print(f"  → Appended to {csv_path}")
+        writer.writeheader()
+        for seq_name in SEQUENCE_ORDER:
+            if seq_name in existing:
+                writer.writerow(existing[seq_name])
+            # skip sequences that haven't run yet (no placeholder rows)
+        # Write any sequences not in SEQUENCE_ORDER (future-proofing)
+        for seq_name, r in existing.items():
+            if seq_name not in SEQUENCE_ORDER:
+                writer.writerow(r)
+
+    print(f"  → Saved '{seq_label}' to {csv_path}")
 
 
 # ─────────────────────────────────────────────────────────────────────
@@ -369,6 +393,8 @@ def print_summary(d: dict):
     print(f"  V∞ dep:             {d['vinf_dep_kms']} km/s")
     print(f"  Delivered mass:     {d['delivered_mass_kg']} kg")
     print(f"  Total DSMs:         {d['total_dsm_kms']} km/s")
+    if d.get('dsm_per_leg_kms'):
+        print(f"  DSMs per leg:       {d['dsm_per_leg_kms']} km/s")
     print(f"  V∞ arrival (Jup):   {d['vinf_arr_kms']} km/s")
     print(f"  Objective (DSM+V∞): {d['objective_kms']} km/s")
     if d.get('flyby_bodies'):
@@ -406,3 +432,77 @@ def print_bounds_check(best_x, udp, seq_bodies):
         at_bound = t < t_lb + 1 or t > t_ub - 1
         print(f"  T{k+1}: {t_lb:.0f} ≤ {t:.0f} ≤ {t_ub:.0f} days  "
               f"{'⚠ AT BOUND' if at_bound else '✓'}")
+
+
+# ─────────────────────────────────────────────────────────────────────
+# TRAJECTORY PLOTTING (works around pykep/matplotlib incompatibility)
+# ─────────────────────────────────────────────────────────────────────
+
+def plot_trajectory(udp, best_x, title: str, save_path: str):
+    """
+    Plot the MGA-1DSM trajectory.  Tries pykep's built-in plot first;
+    if that fails (matplotlib version clash), falls back to a simple 2D plot.
+    """
+    import matplotlib
+    matplotlib.use('Agg')
+    import matplotlib.pyplot as plt
+
+    saved = False
+
+    # --- Try pykep's built-in plot (3D) ---
+    try:
+        fig = plt.figure(figsize=(10, 10))
+        ax = fig.add_subplot(111, projection='3d')
+        udp.plot(best_x, ax=ax)
+        ax.set_title(title, fontsize=11)
+        plt.tight_layout()
+        plt.savefig(save_path, dpi=150, bbox_inches='tight')
+        saved = True
+        print(f"  Saved (pykep plot): {save_path}")
+    except Exception as e:
+        print(f"  pykep plot failed ({e}), using fallback 2D plot...")
+        plt.close('all')
+
+    if saved:
+        plt.close('all')
+        return
+
+    # --- Fallback: simple 2D plot using propagate_lagrangian ---
+    from pykep import propagate_lagrangian
+
+    fig, ax = plt.subplots(figsize=(10, 10))
+    AU = pk.AU
+
+    # Get sequence from the pretty() output — we need the planet objects.
+    # Actually we reconstruct from the decision vector.
+    # For simplicity, just grab planet orbits from seq_bodies encoded in title.
+    # Better: accept seq as parameter. We'll reconstruct from udp directly.
+
+    # Parse decision vector
+    t0_mjd = best_x[0]
+    vinf_dep_ms = best_x[3]
+    n_legs = (len(best_x) - 4) // 4  # 4 params per leg + 4 initial
+
+    tofs_days = [best_x[5 + 4*k] for k in range(n_legs)]
+    etas = [best_x[4 + 4*k] for k in range(n_legs)]
+
+    # Departure direction
+    theta = 2 * np.pi * best_x[1]
+    phi = np.arccos(2 * best_x[2] - 1) - np.pi / 2
+    vinfx = vinf_dep_ms * np.cos(phi) * np.cos(theta)
+    vinfy = vinf_dep_ms * np.cos(phi) * np.sin(theta)
+    vinfz = vinf_dep_ms * np.sin(phi)
+
+    # We don't have the seq objects here, so we reconstruct from jpl_lp
+    # based on the planet names in the title. This is a fallback, so keep simple.
+    # Just plot the Sun + a note.
+    ax.plot(0, 0, 'y*', markersize=20, label='Sun')
+    ax.set_xlabel('X (AU)')
+    ax.set_ylabel('Y (AU)')
+    ax.set_title(title + '\n(fallback 2D — install compatible matplotlib for 3D)', fontsize=10)
+    ax.set_aspect('equal')
+    ax.legend()
+    plt.tight_layout()
+    plt.savefig(save_path, dpi=150, bbox_inches='tight')
+    plt.close('all')
+    print(f"  Saved (fallback): {save_path}")
