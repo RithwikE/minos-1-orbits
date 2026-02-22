@@ -127,7 +127,7 @@ print(f"Saved: {OUTPUT_DIR}/01_porkchop_vinf.png")
 
 # %% Cell 7 — Append to CSV
 row = {
-    'sequence':          'Direct',
+    'sequence':          '01 Direct',
     'launch_date':       str(launch_ep),
     'arrival_date':      str(arrive_ep),
     'tof_years':         f"{best_tof/365.25:.2f}",
