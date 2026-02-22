@@ -1,0 +1,2 @@
+sequence,launch_date,arrival_date,tof_years,c3_kms2,vinf_dep_kms,delivered_mass_kg,total_dsm_kms,vinf_arr_kms,objective_kms,flyby_bodies,flyby_dates,flyby_alts_km,leg_tofs_days,ref_study,ref_c3_kms2,ref_dsm_kms,ref_vinf_arr_kms,ref_tof_years,ref_notes
+Direct,2030-Jan-20 13:05:01.003345,2032-May-04 15:56:52.561133,2.29,76.73,8.760,7209,0.0000,6.406,6.406,,,,835.1,N/A,~77,0,~6,~2.7,Hohmann min-energy; C3≈77 rules out all LVs at mission mass

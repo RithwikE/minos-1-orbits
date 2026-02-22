@@ -1,0 +1,5 @@
+pykep
+ipykernel
+scipy=1.13
+pygmo
+sqlite
