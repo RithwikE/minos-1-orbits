@@ -28,7 +28,7 @@ import pygmo as pg
 from utils import (
     falcon_heavy_payload, run_mga_optimisation,
     extract_mga_results, save_to_csv, print_summary, print_bounds_check,
-    plot_trajectory, OUTPUT_DIR,
+    plot_trajectory, OUTPUT_DIR, start_logging,
 )
 
 # %% Cell 2 — Define problem
@@ -66,6 +66,7 @@ ref = {
 # %% Cell 3 — Main execution
 if __name__ == '__main__':
 
+    tee = start_logging('06')
     print(f"pykep {pk.__version__}  |  pygmo {pg.__version__}")
 
     # 2 legs → 10-dimensional, same as ΔV-EGA

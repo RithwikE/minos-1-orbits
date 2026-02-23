@@ -14,10 +14,12 @@ matplotlib.use('Agg')  # non-interactive backend
 import matplotlib.pyplot as plt
 import pykep as pk
 
-from utils import falcon_heavy_payload, save_to_csv, print_summary, OUTPUT_DIR
+from utils import falcon_heavy_payload, save_to_csv, print_summary, OUTPUT_DIR, start_logging
 
 earth   = pk.planet.jpl_lp('earth')
 jupiter = pk.planet.jpl_lp('jupiter')
+
+tee = start_logging('01')
 print(f"pykep version: {pk.__version__}")
 
 # %% Cell 2 — Define porkchop grid

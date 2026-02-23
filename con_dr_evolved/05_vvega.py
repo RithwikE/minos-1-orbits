@@ -27,7 +27,7 @@ import pygmo as pg
 from utils import (
     falcon_heavy_payload, run_mga_optimisation,
     extract_mga_results, save_to_csv, print_summary, print_bounds_check,
-    plot_trajectory, OUTPUT_DIR,
+    plot_trajectory, OUTPUT_DIR, start_logging,
 )
 
 # %% Cell 2 — Define problem
@@ -43,7 +43,9 @@ seq_names = ['earth', 'venus', 'venus', 'earth', 'jupiter']
 udp = pk.trajopt.mga_1dsm(
     seq=seq,
     t0=[pk.epoch_from_string('2030-01-01 00:00:00'),
-        pk.epoch_from_string('2038-01-01 00:00:00')],
+        pk.epoch_from_string('2035-01-01 00:00:00')],
+                           # capped at 2035 to prevent ephemeris overflow:
+                           # max arrival = 2035 + 12.3 yr = 2047.3 < 2050 limit
     tof=[[100, 500],      # Leg 1: E→V (days) — inner transfer, ~0.3–1.4 yr
          [100, 800],      # Leg 2: V→V (days) — Venus resonant orbit
                            #   ~225d (1:1) or ~450d (2:1) typical
@@ -68,6 +70,7 @@ ref = {
 # %% Cell 3 — Main execution
 if __name__ == '__main__':
 
+    tee = start_logging('05')
     print(f"pykep {pk.__version__}  |  pygmo {pg.__version__}")
 
     # 4 legs → 18-dimensional search space, same heavy compute as VEEGA

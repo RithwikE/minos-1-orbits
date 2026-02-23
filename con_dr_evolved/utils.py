@@ -27,6 +27,38 @@ _SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 OUTPUT_DIR  = os.path.join(_SCRIPT_DIR, 'output')
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
+
+# ─────────────────────────────────────────────────────────────────────
+# STDOUT TEE (log to file + terminal simultaneously)
+# ─────────────────────────────────────────────────────────────────────
+
+class Tee:
+    """Duplicate stdout to a file while still printing to terminal."""
+    def __init__(self, filepath):
+        self.file = open(filepath, 'w')
+        self.terminal = sys.__stdout__
+    def write(self, s):
+        self.terminal.write(s)
+        self.file.write(s)
+    def flush(self):
+        self.terminal.flush()
+        self.file.flush()
+    def close(self):
+        self.file.close()
+        sys.stdout = self.terminal
+
+
+def start_logging(script_num: str):
+    """Call at the top of __main__ to log all output. Returns the Tee object.
+
+    Usage:
+        tee = start_logging('04')   # writes to output/04_output.txt
+    """
+    path = os.path.join(OUTPUT_DIR, f'{script_num}_output.txt')
+    tee = Tee(path)
+    sys.stdout = tee
+    return tee
+
 # ─────────────────────────────────────────────────────────────────────
 # LAUNCH VEHICLE PERFORMANCE
 # ─────────────────────────────────────────────────────────────────────

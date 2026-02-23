@@ -1,0 +1,155 @@
+pykep {'major': 2, 'minor': 6}  |  pygmo 2.19.7
+
+============================================================
+  OPTIMISING: VVEGA (E-V-V-E-J)
+============================================================
+Problem name: MGA_1DSM Trajectory
+	C++ class name: pybind11::object
+
+	Global dimension:			18
+	Integer dimension:			0
+	Fitness dimension:			1
+	Number of objectives:			1
+	Equality constraints dimension:		0
+	Inequality constraints dimension:	0
+	Lower bounds: [10958, 0, 0, 1500, 0.1, ... ]
+	Upper bounds: [12784, 1, 1, 7000, 0.9, ... ]
+	Has batch fitness evaluation: false
+
+	Has gradient: false
+	User implemented gradient sparsity: false
+	Has hessians: false
+	User implemented hessians sparsity: false
+
+	Fitness evaluations: 0
+
+	Thread safety: none
+
+Extra info:
+
+	 Sequence: ['earth', 'venus', 'venus', 'earth', 'jupiter']
+	 Add launcher vinf to the objective?: False
+	 Add final vinf to the objective?: False
+
+Phase 1: 128 islands × 48 pop × 800 gen × 12 rounds
+  Round 1/12: best = 5.0035 km/s
+  Round 2/12: best = 4.0520 km/s
+  Round 3/12: best = 3.7232 km/s
+  Round 4/12: best = 3.1154 km/s
+  Round 5/12: best = 3.1154 km/s
+  Round 6/12: best = 3.1154 km/s
+  Round 7/12: best = 3.0486 km/s
+  Round 8/12: best = 3.0486 km/s
+  Round 9/12: best = 2.7860 km/s
+  Round 10/12: best = 2.2998 km/s
+  Round 11/12: best = 2.0450 km/s
+  Round 12/12: best = 2.0109 km/s
+
+Phase 1 done. Top 5:
+  #1: 2.0109 km/s
+  #2: 2.4302 km/s
+  #3: 2.6371 km/s
+  #4: 2.6541 km/s
+  #5: 2.8392 km/s
+
+Phase 2: refining top 80 seeds (2500 gen each)
+  10/80 done, best = 1.9861 km/s
+  20/80 done, best = 1.9861 km/s
+  30/80 done, best = 1.9861 km/s
+  40/80 done, best = 1.9861 km/s
+  50/80 done, best = 1.9861 km/s
+  60/80 done, best = 1.9861 km/s
+  70/80 done, best = 1.9861 km/s
+  80/80 done, best = 1.9861 km/s
+
+Phase 3: Compass Search (500,000 fevals)
+
+  ✓ Final objective: 1.8382 km/s
+
+============================================================
+  VVEGA — pykep pretty() output
+============================================================
+First Leg: earth to venus
+Departure: 2033-Mar-26 02:06:47.164113 (12138.088045880942 mjd2000) 
+Duration: 159.5326108869609days
+VINF: 5.396244595240318 km/sec
+DSM after 72.55403628208835 days
+DSM magnitude: 1376.3273849860914m/s
+
+leg no. 2: venus to venus
+Duration: 441.8934859326449days
+Fly-by epoch: 2033-Sep-01 14:53:44.744747 (12297.620656767904 mjd2000) 
+Fly-by radius: 1.7228616925517524 planetary radii
+DSM after 150.70578333310405 days
+DSM magnitude: 421.62975803502223m/s
+
+leg no. 3: venus to earth
+Duration: 648.9176997103526days
+Fly-by epoch: 2034-Nov-17 12:20:21.929327 (12739.514142700547 mjd2000) 
+Fly-by radius: 1.9041571727346476 planetary radii
+DSM after 218.8873627051753 days
+DSM magnitude: 39.74557463097566m/s
+
+leg no. 4: earth to jupiter
+Duration: 1897.8386116227675days
+Fly-by epoch: 2036-Aug-27 10:21:51.184302 (13388.4318424109 mjd2000) 
+Fly-by radius: 1.1466675644374855 planetary radii
+DSM after 588.5870663391288 days
+DSM magnitude: 0.44741549382213675m/s
+
+Arrival at jupiter
+Arrival epoch: 2041-Nov-07 06:29:27.228509 (15286.270454033669 mjd2000) 
+Arrival Vinf: 8201.527947417939m/s
+Total mission time: 8.619253684196375 years (3148.182408152726 days)
+
+============================================================
+  05 VVEGA — TRADE STUDY SUMMARY
+============================================================
+  Launch:             2033-Mar-26 02:06:47.164113
+  Arrival:            2041-Nov-07 06:29:27.228509
+  TOF:                8.62 yr
+  C3:                 29.12 km²/s²
+  V∞ dep:             5.396 km/s
+  Delivered mass:     12535 kg
+  Total DSMs:         1.8382 km/s
+  DSMs per leg:       1.3763;0.4216;0.0397;0.0004 km/s
+  V∞ arrival (Jup):   8.202 km/s
+  Objective (Σ DSMs): 1.8382 km/s
+  Flybys:             venus;venus;earth
+  Flyby dates:        2033-Sep-01 14:53:44.744747;2034-Nov-17 12:20:21.929327;2036-Aug-27 10:21:51.184302
+  Flyby altitudes:    5417;6624;1667 km
+  Leg TOFs:           159.5;441.9;648.9;1897.8 days
+  --- Reference ---
+  Study:              Cassini-class VVEJGA (adapted)
+  Ref C3:             ~10–20 (Cassini VVEJGA had C3≈16 to Saturn) km²/s²
+  Ref DSM:            ~0.5–1.5 (estimated for Jupiter target) km/s
+  Ref V∞ arr:         ~6–8 km/s
+  Ref TOF:            5–8 yr
+  Notes:              Double Venus flyby adds ~1–2 yr but may lower C3; less studied for Jupiter
+============================================================
+
+Bounds check:
+  V∞ dep: 1.5 ≤ 5.40 ≤ 7.0 km/s  ✓
+  T1: 100 ≤ 160 ≤ 500 days  ✓
+  T2: 100 ≤ 442 ≤ 800 days  ✓
+  T3: 100 ≤ 649 ≤ 1000 days  ✓
+  T4: 400 ≤ 1898 ≤ 2200 days  ✓
+  Saved: /Users/ike/Desktop/Purdue/2025-2026/AAE450/minos-1-orbits/con_dr_evolved/output/05_trajectory_vvega.png
+  → Saved '05 VVEGA' to /Users/ike/Desktop/Purdue/2025-2026/AAE450/minos-1-orbits/con_dr_evolved/output/trade_study_results.csv
+
+Decision vector breakdown:
+  t0 (mjd2000):       12138.09
+  u, v (V∞ dir):      0.2777, 0.5147
+  V∞ dep:             5396.2 m/s = 5.396 km/s
+  Leg 1: η=0.4548, T=159.5 d (0.44 yr)
+         β=4.7735 rad, rp/safe_r=1.7229
+  Leg 2: η=0.3410, T=441.9 d (1.21 yr)
+         β=4.3732 rad, rp/safe_r=1.9042
+  Leg 3: η=0.3373, T=648.9 d (1.78 yr)
+         β=-1.4684 rad, rp/safe_r=1.1467
+  Leg 4: η=0.3101, T=1897.8 d (5.20 yr)
+
+  Objective (m/s): 1838.2
+  Objective (km/s): 1.8382
+  → This = Σ(DSMs) only. Arrival V∞ = 8.202 km/s (NOT included).
+  → C3 = 29.1 → FH delivers 12535 kg

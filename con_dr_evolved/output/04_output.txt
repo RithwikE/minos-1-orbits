@@ -1,0 +1,200 @@
+pykep {'major': 2, 'minor': 6}  |  pygmo 2.19.7
+
+============================================================
+  OPTIMISING: VEEGA (E-V-E-E-J)
+============================================================
+Problem name: MGA_1DSM Trajectory
+	C++ class name: pybind11::object
+
+	Global dimension:			18
+	Integer dimension:			0
+	Fitness dimension:			1
+	Number of objectives:			1
+	Equality constraints dimension:		0
+	Inequality constraints dimension:	0
+	Lower bounds: [10958, 0, 0, 2500, 0.1, ... ]
+	Upper bounds: [13880, 1, 1, 5500, 0.9, ... ]
+	Has batch fitness evaluation: false
+
+	Has gradient: false
+	User implemented gradient sparsity: false
+	Has hessians: false
+	User implemented hessians sparsity: false
+
+	Fitness evaluations: 0
+
+	Thread safety: none
+
+Extra info:
+
+	 Sequence: ['earth', 'venus', 'earth', 'earth', 'jupiter']
+	 Add launcher vinf to the objective?: False
+	 Add final vinf to the objective?: False
+
+Phase 1: 160 islands × 64 pop × 1000 gen × 14 rounds
+  Round 1/14: best = 4.6969 km/s
+  Round 2/14: best = 3.7047 km/s
+  Round 3/14: best = 3.3964 km/s
+  Round 4/14: best = 2.9881 km/s
+  Round 5/14: best = 1.6578 km/s
+  Round 6/14: best = 1.4686 km/s
+  Round 7/14: best = 1.4387 km/s
+  Round 8/14: best = 1.4387 km/s
+  Round 9/14: best = 1.4367 km/s
+  Round 10/14: best = 1.4366 km/s
+  Round 11/14: best = 1.3981 km/s
+  Round 12/14: best = 1.3981 km/s
+  Round 13/14: best = 1.3976 km/s
+  Round 14/14: best = 1.3976 km/s
+
+Phase 1 done. Top 5:
+  #1: 1.3976 km/s
+  #2: 1.8887 km/s
+  #3: 2.2016 km/s
+  #4: 2.2164 km/s
+  #5: 2.3092 km/s
+
+Phase 2: refining top 100 seeds (3000 gen each)
+  10/100 done, best = 1.2769 km/s
+  20/100 done, best = 1.2769 km/s
+  30/100 done, best = 1.2769 km/s
+  40/100 done, best = 1.2769 km/s
+  50/100 done, best = 1.2769 km/s
+  60/100 done, best = 1.2769 km/s
+  70/100 done, best = 1.2769 km/s
+  80/100 done, best = 1.2769 km/s
+  90/100 done, best = 1.2769 km/s
+  100/100 done, best = 1.2769 km/s
+
+Phase 3: Compass Search (750,000 fevals)
+
+  ✓ Final objective: 1.0393 km/s
+
+============================================================
+  VEEGA — pykep pretty() output
+============================================================
+First Leg: earth to venus
+Departure: 2034-Jul-05 08:00:05.149162 (12604.333392930117 mjd2000) 
+Duration: 144.2798308075375days
+VINF: 2.9739059630127485 km/sec
+DSM after 36.791332940988525 days
+DSM magnitude: 2.0616399553151163m/s
+
+leg no. 2: venus to earth
+Duration: 627.5238680055289days
+Fly-by epoch: 2034-Nov-26 14:43:02.530933 (12748.613223737655 mjd2000) 
+Fly-by radius: 2.913039900922318 planetary radii
+DSM after 534.4999405698278 days
+DSM magnitude: 642.5562594679425m/s
+
+leg no. 3: earth to earth
+Duration: 828.1206051426689days
+Fly-by epoch: 2036-Aug-15 03:17:24.726611 (13376.137091743183 mjd2000) 
+Fly-by radius: 1.325320699783022 planetary radii
+DSM after 371.10873722406535 days
+DSM magnitude: 394.27157171932436m/s
+
+leg no. 4: earth to jupiter
+Duration: 951.3645974812208days
+Fly-by epoch: 2038-Nov-21 06:11:05.010938 (14204.257696885852 mjd2000) 
+Fly-by radius: 1.426335043827729 planetary radii
+DSM after 240.15638430871053 days
+DSM magnitude: 0.4432729009317422m/s
+
+Arrival at jupiter
+Arrival epoch: 2041-Jun-29 14:56:06.233315 (15155.622294367073 mjd2000) 
+Arrival Vinf: 5623.226974255066m/s
+Total mission time: 6.985048327000564 years (2551.288901436956 days)
+
+============================================================
+  04 VEEGA — TRADE STUDY SUMMARY
+============================================================
+  Launch:             2034-Jul-05 08:00:05.149162
+  Arrival:            2041-Jun-29 14:56:06.233315
+  TOF:                6.99 yr
+  C3:                 8.84 km²/s²
+  V∞ dep:             2.974 km/s
+  Delivered mass:     17623 kg
+  Total DSMs:         1.0393 km/s
+  DSMs per leg:       0.0021;0.6426;0.3943;0.0004 km/s
+  V∞ arrival (Jup):   5.623 km/s
+  Objective (Σ DSMs): 1.0393 km/s
+  Flybys:             venus;earth;earth
+  Flyby dates:        2034-Nov-26 14:43:02.530933;2036-Aug-15 03:17:24.726611;2038-Nov-21 06:11:05.010938
+  Flyby altitudes:    13341;2920;3629 km
+  Leg TOFs:           144.3;627.5;828.1;951.4 days
+  --- Reference ---
+  Study:              2012 Europa Study (VEEGA baseline)
+  Ref C3:             ~15 (14.2 exact) km²/s²
+  Ref DSM:            0-0.1 (optimal day zero; up to 0.1 over launch period) km/s
+  Ref V∞ arr:         ~7.4 (V∞ at Ganymede G0, pre-JOI) km/s
+  Ref TOF:            6.36 yr
+  Notes:              Delta IV Heavy; V flyby 3184km, E flybys 11764/3336km; DSM on E-V leg
+============================================================
+
+Bounds check:
+  V∞ dep: 2.5 ≤ 2.97 ≤ 5.5 km/s  ✓
+  T1: 100 ≤ 144 ≤ 400 days  ✓
+  T2: 100 ≤ 628 ≤ 700 days  ✓
+  T3: 300 ≤ 828 ≤ 900 days  ✓
+  T4: 400 ≤ 951 ≤ 1500 days  ✓
+  Saved: /Users/ike/Desktop/Purdue/2025-2026/AAE450/minos-1-orbits/con_dr_evolved/output/04_trajectory_veega.png
+  → Saved '04 VEEGA' to /Users/ike/Desktop/Purdue/2025-2026/AAE450/minos-1-orbits/con_dr_evolved/output/trade_study_results.csv
+
+Decision vector breakdown:
+  t0 (mjd2000):       12604.33
+  u, v (V_inf dir):   0.6108, 0.3588
+  V_inf dep:          2973.9 m/s = 2.974 km/s
+  Leg 1: eta=0.2550, T=144.3 d (0.40 yr)
+         beta=-0.9576 rad, rp/safe_r=2.9130
+  Leg 2: eta=0.8518, T=627.5 d (1.72 yr)
+         beta=4.7903 rad, rp/safe_r=1.3253
+  Leg 3: eta=0.4481, T=828.1 d (2.27 yr)
+         beta=5.0202 rad, rp/safe_r=1.4263
+  Leg 4: eta=0.2524, T=951.4 d (2.60 yr)
+
+  Objective (m/s): 1039.3
+  Objective (km/s): 1.0393
+  -> This = sum(DSMs) only. Arrival V_inf = 5.623 km/s (NOT included).
+  -> C3 = 8.8 -> FH delivers 17623 kg
+
+============================================================
+  EXTRA DIAGNOSTICS
+============================================================
+
+  LEO Departure (200 km parking orbit):
+    V_circular  = 7.784 km/s
+    V_departure = 11.403 km/s
+    dV_depart   = 3.619 km/s  (Oberth-boosted TLI-like burn)
+    Note: launch vehicle provides this, not spacecraft propulsion
+
+  JOI Estimate (200-day capture orbit, periapsis 12.8 Rj):
+    V_inf arrival  = 5.623 km/s
+    V_hyperbolic   = 17.565 km/s (at periapsis)
+    V_capture      = 16.250 km/s (200-day orbit at periapsis)
+    dV_JOI         = 1.315 km/s
+    With G0 flyby: ~0.915 km/s (saving ~0.4 km/s)
+
+  Mission Timeline:
+    Departure             2034-Jul-05 08:00:05  (T+0.00 yr)
+    Venus flyby           2034-Nov-26 14:43:02  (T+0.40 yr)
+    Earth flyby           2036-Aug-15 03:17:24  (T+2.11 yr)
+    Earth flyby           2038-Nov-21 06:11:05  (T+4.38 yr)
+    Jupiter arrival       2041-Jun-29 14:56:06  (T+6.99 yr)
+
+  Flyby V_inf (from Lambert reconstruction):
+    Venus   : V_inf = 5.009 km/s
+    Earth   : V_inf = 16.129 km/s
+    Earth   : V_inf = 32.154 km/s
+
+  Mass Budget Context:
+    FH delivers 17,623 kg at C3 = 8.8 km^2/s^2
+    Spacecraft DSM budget: 1.039 km/s
+    JOI budget (est.): ~1.32 km/s (before G0 flyby savings)
+    15,000 kg wet mass target MET (margin: 2,623 kg)
+
+============================================================
+  GENERATING TRAJECTORY GIF...
+============================================================
+  Saved GIF: /Users/ike/Desktop/Purdue/2025-2026/AAE450/minos-1-orbits/con_dr_evolved/output/04_trajectory_veega.gif
+  GIF generation complete.
