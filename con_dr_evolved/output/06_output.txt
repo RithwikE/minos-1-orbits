@@ -1,0 +1,128 @@
+pykep {'major': 2, 'minor': 6}  |  pygmo 2.19.7
+
+============================================================
+  OPTIMISING: MGA-Mars (E-M-J)
+============================================================
+Problem name: MGA_1DSM Trajectory
+	C++ class name: pybind11::object
+
+	Global dimension:			10
+	Integer dimension:			0
+	Fitness dimension:			1
+	Number of objectives:			1
+	Equality constraints dimension:		0
+	Inequality constraints dimension:	0
+	Lower bounds: [10958, 0, 0, 1500, 0.1, ... ]
+	Upper bounds: [13880, 1, 1, 7000, 0.9, ... ]
+	Has batch fitness evaluation: false
+
+	Has gradient: false
+	User implemented gradient sparsity: false
+	Has hessians: false
+	User implemented hessians sparsity: false
+
+	Fitness evaluations: 0
+
+	Thread safety: none
+
+Extra info:
+
+	 Sequence: ['earth', 'mars', 'jupiter']
+	 Add launcher vinf to the objective?: False
+	 Add final vinf to the objective?: False
+
+Phase 1: 96 islands × 32 pop × 500 gen × 8 rounds
+  Round 1/8: best = 3.3525 km/s
+  Round 2/8: best = 2.4743 km/s
+  Round 3/8: best = 2.3894 km/s
+  Round 4/8: best = 1.8499 km/s
+  Round 5/8: best = 1.8209 km/s
+  Round 6/8: best = 1.8209 km/s
+  Round 7/8: best = 1.8209 km/s
+  Round 8/8: best = 1.8209 km/s
+
+Phase 1 done. Top 5:
+  #1: 1.8209 km/s
+  #2: 1.8209 km/s
+  #3: 1.8209 km/s
+  #4: 1.8210 km/s
+  #5: 1.8328 km/s
+
+Phase 2: refining top 50 seeds (1500 gen each)
+  10/50 done, best = 1.8209 km/s
+  20/50 done, best = 1.8209 km/s
+  30/50 done, best = 1.8209 km/s
+  40/50 done, best = 1.8209 km/s
+  50/50 done, best = 1.8209 km/s
+
+Phase 3: Compass Search (200,000 fevals)
+
+  ✓ Final objective: 1.8209 km/s
+
+============================================================
+  MGA (Mars) — pykep pretty() output
+============================================================
+First Leg: earth to mars
+Departure: 2030-May-20 02:33:57.926119 (11097.10692044119 mjd2000) 
+Duration: 800.0days
+VINF: 7.0 km/sec
+DSM after 379.25734004684284 days
+DSM magnitude: 180.01519291384892m/s
+
+leg no. 2: mars to jupiter
+Duration: 960.8256189346038days
+Fly-by epoch: 2032-Jul-28 02:33:57.926119 (11897.10692044119 mjd2000) 
+Fly-by radius: 1.1 planetary radii
+DSM after 146.47674230242598 days
+DSM magnitude: 1640.8677202384579m/s
+
+Arrival at jupiter
+Arrival epoch: 2035-Mar-15 22:22:51.402069 (12857.932539375794 mjd2000) 
+Arrival Vinf: 5856.971713886748m/s
+Total mission time: 4.820877806802475 years (1760.8256189346039 days)
+
+============================================================
+  06 MGA — TRADE STUDY SUMMARY
+============================================================
+  Launch:             2030-May-20 02:33:57.926119
+  Arrival:            2035-Mar-15 22:22:51.402069
+  TOF:                4.82 yr
+  C3:                 49.00 km²/s²
+  V∞ dep:             7.000 km/s
+  Delivered mass:     9182 kg
+  Total DSMs:         1.8209 km/s
+  DSMs per leg:       0.1800;1.6409 km/s
+  V∞ arrival (Jup):   5.857 km/s
+  Objective (Σ DSMs): 1.8209 km/s
+  Flybys:             mars
+  Flyby dates:        2032-Jul-28 02:33:57.926119
+  Flyby altitudes:    713 km
+  Leg TOFs:           800.0;960.8 days
+  --- Reference ---
+  Study:              2018 JPL Europa Lander (EGA+Mars, 2026 launch)
+  Ref C3:             ~20–30 (varies with alignment window) km²/s²
+  Ref DSM:            ~0.1–0.5 km/s
+  Ref V∞ arr:         ~6–7 km/s
+  Ref TOF:            5–7 (Earth-Mars-Jupiter portion) yr
+  Notes:              Mars GA opportunistic; alignment dependent; SLS baseline in JPL study
+============================================================
+
+Bounds check:
+  V∞ dep: 1.5 ≤ 7.00 ≤ 7.0 km/s  ⚠ AT BOUND
+  T1: 150 ≤ 800 ≤ 800 days  ⚠ AT BOUND
+  T2: 200 ≤ 961 ≤ 2500 days  ✓
+  Saved: /Users/ike/Desktop/Purdue/2025-2026/AAE450/minos-1-orbits/con_dr_evolved/output/06_trajectory_mga.png
+  → Saved '06 MGA' to /Users/ike/Desktop/Purdue/2025-2026/AAE450/minos-1-orbits/con_dr_evolved/output/trade_study_results.csv
+
+Decision vector breakdown:
+  t0 (mjd2000):       11097.11
+  u, v (V∞ dir):      0.8417, 0.5818
+  V∞ dep:             7000.0 m/s = 7.000 km/s
+  Leg 1: η=0.4741, T=800.0 d (2.19 yr)
+         β=-1.6216 rad, rp/safe_r=1.1000
+  Leg 2: η=0.1524, T=960.8 d (2.63 yr)
+
+  Objective (m/s): 1820.9
+  Objective (km/s): 1.8209
+  → This = Σ(DSMs) only. Arrival V∞ = 5.857 km/s (NOT included).
+  → C3 = 49.0 → FH delivers 9182 kg

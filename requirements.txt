@@ -1,3 +1,4 @@
 pykep
 scipy=1.13
 pygmo
+pandas
