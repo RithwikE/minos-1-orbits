@@ -1,0 +1,67 @@
+pykep version: 2.6.4
+Europa orbital radius:  9.39 Rj
+Europa orbital speed:   13.740 km/s
+JOI periapsis:          5.0 Rj
+Jupiter arrival Vinf:   5.623 km/s
+
+=========================================================
+  HOHMANN TRANSFER  (single burn, r_apo = Europa orbit)
+=========================================================
+  JOI dV (periapsis burn):    5.7056 km/s
+  Europa arrival Vinf:        2.2848 km/s  (~0, tangent)
+  Transfer TOF:               1.191 days
+  Total dV this leg:          7.9904 km/s
+
+  Hyperbolic speed at peri:   27.211 km/s
+  Hohmann speed at peri:      21.505 km/s
+  Hohmann speed at apo:       11.455 km/s
+  Europa circular speed:      13.740 km/s
+=========================================================
+
+  -- Minimum total dV (two-burn sweep) --
+  Capture orbit apoapsis:  1000.0 Rj
+  JOI dV:                  0.654 km/s
+  Europa arrival Vinf:     5.601 km/s
+  Total dV:                6.303 km/s
+  Total TOF:               1395.8 days
+
+Saved: /home/jjmine/450Project/minos-1-orbits/con_dr_prelim_jupeuropa/output/02_dv_budget.png
+Saved: /home/jjmine/450Project/minos-1-orbits/con_dr_prelim_jupeuropa/output/02_vinf_tof.png
+Saved: /home/jjmine/450Project/minos-1-orbits/con_dr_prelim_jupeuropa/output/02_joi_tradeoff.png
+
+Generating 3D trajectory GIF...
+Saved: /home/jjmine/450Project/minos-1-orbits/con_dr_prelim_jupeuropa/output/02_trajectory.gif
+  → Saved '02 Direct Jupiter-Europa' to /home/jjmine/450Project/minos-1-orbits/con_dr_prelim_jupeuropa/output/trade_study_results.csv
+
+============================================================
+  02 Direct Jupiter-Europa — TRADE STUDY SUMMARY
+============================================================
+  Launch:             N/A (analytical)
+  Arrival:            N/A (analytical)
+  TOF:                0.0033 yr
+  C3:                 5.220193 km²/s²
+  V∞ dep:             5.706 km/s
+  Delivered mass:     N/A kg
+  Total DSMs:         0.0000 km/s
+  V∞ arrival (Jup):   2.2848 km/s
+  Objective (Σ DSMs): 2.2848 km/s
+  Leg TOFs:           1.191 days
+  --- Reference ---
+  Study:              N/A
+  Ref C3:             ~0 km²/s²
+  Ref DSM:            0 km/s
+  Ref V∞ arr:         ~0.04 km/s
+  Ref TOF:            ~0.005 yr
+  Notes:              Analytical Hohmann; JOI dV dominates; Vinf arr negligible
+============================================================
+
+Key results:
+  Hohmann TOF:           1.191 days
+  Europa arrival Vinf:   2.2848 km/s  (negligible)
+  JOI dV:                5.7056 km/s  (dominant cost)
+  Total dV this leg:     7.9904 km/s
+
+CONCLUSION: JOI dV ~ 5.66 km/s is the dominant cost.
+Europa arrival Vinf ~ 0 for Hohmann -- EOI dV is a separate budget.
+A resonant Galilean-moon tour reduces JOI dV by using gravity assists
+to bleed off the 5.623 km/s Jupiter arrival Vinf gradually.
