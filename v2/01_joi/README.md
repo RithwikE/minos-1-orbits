@@ -69,6 +69,7 @@ If we want true trade studies rather than a single ranking, then we should also 
 - `pykep.trajopt.mga_1dsm` supports both single-objective and multi-objective formulations.
 - In the official `pykep` docs, the built-in multi-objective form is described as optimizing total `DV` and total time of flight.
 - `pykep` offers different time-of-flight encodings. The docs describe direct leg-by-leg encoding as easier for the optimizer, while alpha / eta encodings reduce the amount of prior leg-bound knowledge required.
+- `pykep` generally uses SI internally, but `mga_1dsm` has an important interface exception: the constructor `vinf` bounds are provided in `km/s`, while the instantiated chromosome stores that same quantity in `m/s`. This must be handled carefully when reconstructing `C3` and reporting `V_inf`.
 - `pykep` trajectory problems provide built-in helpers such as `pretty()` and `plot()`, and the official examples also show `get_eph_function()` for reconstruction and analysis.
 - `pygmo` populations expose the full decision vectors and fitness arrays, not just the champion. That means saving top `N` candidates or entire final populations is straightforward.
 - `pygmo` also provides multi-objective tools such as `nsga2`, `moead`, and non-dominated sorting utilities, so saving Pareto fronts is supported directly.

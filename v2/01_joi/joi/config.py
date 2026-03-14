@@ -22,7 +22,8 @@ class SequenceConfig:
     vinf_kms_min: float
     max_c3_kms2: float
     max_total_tof_days: float
-    tof_days: list[LegBounds]
+    tof_days: list[LegBounds] = field(default_factory=list)
+    total_tof_days: LegBounds | None = None
     objective: str = "total_dsm"
     tof_encoding: str = "direct"
     add_vinf_dep: bool = False
@@ -70,8 +71,14 @@ def load_sequence_config(path: str | Path) -> SequenceConfig:
             minimum_days=float(leg["min"]),
             maximum_days=float(leg["max"]),
         )
-        for leg in raw["tof_days"]
+        for leg in raw.get("tof_days", [])
     ]
+    total_tof = None
+    if "tof_total_days" in raw:
+        total_tof = LegBounds(
+            minimum_days=float(raw["tof_total_days"]["min"]),
+            maximum_days=float(raw["tof_total_days"]["max"]),
+        )
     config = SequenceConfig(
         name=raw["name"],
         label=raw["label"],
@@ -82,6 +89,7 @@ def load_sequence_config(path: str | Path) -> SequenceConfig:
         max_c3_kms2=float(raw["max_c3_kms2"]),
         max_total_tof_days=float(raw["max_total_tof_days"]),
         tof_days=legs,
+        total_tof_days=total_tof,
         objective=raw.get("objective", "total_dsm"),
         tof_encoding=raw.get("tof_encoding", "direct"),
         add_vinf_dep=bool(raw.get("add_vinf_dep", False)),
@@ -99,8 +107,6 @@ def load_sequence_config(path: str | Path) -> SequenceConfig:
 def validate_sequence_config(config: SequenceConfig) -> None:
     if len(config.bodies) < 2:
         raise ValueError("A sequence needs at least a departure and arrival body.")
-    if len(config.tof_days) != len(config.bodies) - 1:
-        raise ValueError("`tof_days` must have one entry per leg.")
     if config.max_c3_kms2 <= 0.0:
         raise ValueError("`max_c3_kms2` must be positive.")
     if config.vinf_kms_min < 0.0:
@@ -109,20 +115,51 @@ def validate_sequence_config(config: SequenceConfig) -> None:
         raise ValueError("`vinf_kms_min` must be below the implied `vinf_kms_max`.")
     if config.max_total_tof_days <= 0.0:
         raise ValueError("`max_total_tof_days` must be positive.")
-    total_leg_min = sum(leg.minimum_days for leg in config.tof_days)
-    total_leg_max = sum(leg.maximum_days for leg in config.tof_days)
-    if total_leg_max < 1.0:
-        raise ValueError("Total leg TOF maxima must be positive.")
-    if total_leg_min > config.max_total_tof_days:
-        raise ValueError(
-            "`max_total_tof_days` is smaller than the sum of the minimum leg TOFs."
-        )
-    if config.tof_encoding == "direct" and total_leg_max > config.max_total_tof_days:
-        raise ValueError(
-            "For `direct` encoding, the sum of leg TOF maxima cannot exceed "
-            "`max_total_tof_days`, otherwise the search domain includes invalid "
-            "total mission durations."
-        )
+    if config.tof_encoding not in {"direct", "alpha", "eta"}:
+        raise ValueError("`tof_encoding` must be one of `direct`, `alpha`, or `eta`.")
+
+    if config.tof_encoding == "direct":
+        if len(config.tof_days) != len(config.bodies) - 1:
+            raise ValueError("`tof_days` must have one entry per leg for `direct` encoding.")
+        total_leg_min = sum(leg.minimum_days for leg in config.tof_days)
+        total_leg_max = sum(leg.maximum_days for leg in config.tof_days)
+        if total_leg_max < 1.0:
+            raise ValueError("Total leg TOF maxima must be positive.")
+        if total_leg_min > config.max_total_tof_days:
+            raise ValueError(
+                "`max_total_tof_days` is smaller than the sum of the minimum leg TOFs."
+            )
+        if total_leg_max > config.max_total_tof_days:
+            raise ValueError(
+                "For `direct` encoding, the sum of leg TOF maxima cannot exceed "
+                "`max_total_tof_days`, otherwise the search domain includes invalid "
+                "total mission durations."
+            )
+        return
+
+    if config.tof_encoding == "alpha":
+        if config.total_tof_days is None:
+            raise ValueError("`tof_total_days` is required for `alpha` encoding.")
+        if config.total_tof_days.maximum_days > config.max_total_tof_days:
+            raise ValueError(
+                "The `alpha` total TOF upper bound cannot exceed `max_total_tof_days`."
+            )
+        if config.total_tof_days.minimum_days <= 0.0:
+            raise ValueError("`alpha` total TOF minimum must be positive.")
+        if config.total_tof_days.minimum_days >= config.total_tof_days.maximum_days:
+            raise ValueError("`tof_total_days.min` must be below `tof_total_days.max`.")
+        return
+
+    if config.total_tof_days is not None:
+        if config.total_tof_days.maximum_days > config.max_total_tof_days:
+            raise ValueError(
+                "The optional eta total TOF upper bound cannot exceed `max_total_tof_days`."
+            )
+        if config.total_tof_days.minimum_days > 0.0:
+            raise ValueError(
+                "`eta` encoding only supports an upper total TOF bound in pykep. "
+                "Do not provide a positive `tof_total_days.min`."
+            )
 
 
 def build_compute_profile(level: int) -> ComputeProfile:
