@@ -10,3 +10,6 @@ wheels/
 .venv
 
 kernels/
+
+# Generated JOI search outputs
+v2/01_joi/results/

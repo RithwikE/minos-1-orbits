@@ -1,0 +1,28 @@
+name = "dvega"
+label = "02 Delta-V EGA"
+bodies = ["earth", "earth", "jupiter"]
+departure_start = "2030-01-01 00:00:00"
+departure_end = "2038-01-01 00:00:00"
+vinf_kms_min = 0.0
+max_c3_kms2 = 15.0
+max_total_tof_days = 3652.5
+objective = "total_dsm"
+tof_encoding = "direct"
+add_vinf_dep = false
+add_vinf_arr = false
+multi_objective = false
+top_n = 50
+dense_output_samples_per_leg = 128
+notes = "Looser starting bounds for Earth-Earth-Jupiter under a hard C3 <= 15 km^2/s^2 rule. Direct encoding is retained for now, but the bounds should avoid excluding viable low-C3 trajectories."
+
+[[tof_days]]
+min = 120
+max = 1800
+
+[[tof_days]]
+min = 500
+max = 1850
+
+[metadata]
+family = "ega"
+reference = "v1 02_dvega and follow-on JOI study"
