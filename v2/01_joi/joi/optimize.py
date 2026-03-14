@@ -1,9 +1,9 @@
 from __future__ import annotations
 
-from dataclasses import asdict
 from datetime import UTC, datetime
 import json
 from pathlib import Path
+import subprocess
 import time
 
 import numpy as np
@@ -30,6 +30,11 @@ def run_single_objective_search(
     started_at_utc = datetime.now(UTC).isoformat()
     run_started = time.perf_counter()
     archive: list[dict] = []
+    phase_fevals = {
+        "phase1": 0,
+        "phase2": 0,
+        "phase3": 0,
+    }
 
     archipelago = pg.archipelago()
     for island_idx in range(profile.phase1_islands):
@@ -53,9 +58,14 @@ def run_single_objective_search(
                     archipelago=archipelago,
                     stage=f"phase1_round_{round_idx + 1}",
                 ),
+                udp=udp,
                 config=config,
             )
         )
+    phase_fevals["phase1"] = sum(
+        island.get_population().problem.get_fevals()
+        for island in archipelago
+    )
 
     ranked = rank_single_objective_candidates(archive)
     if not ranked:
@@ -69,6 +79,7 @@ def run_single_objective_search(
         pop = pg.population(problem, size=profile.phase2_pop_size, seed=base_seed + 30_000 + seed_idx)
         pop.set_x(0, np.array(candidate["x"], dtype=float))
         pop = algo2.evolve(pop)
+        phase_fevals["phase2"] += pop.problem.get_fevals()
         archive.extend(
             apply_mission_filters(
                 collect_population_candidates(
@@ -76,6 +87,7 @@ def run_single_objective_search(
                     population=pop,
                     stage=f"phase2_seed_{seed_idx + 1}",
                 ),
+                udp=udp,
                 config=config,
             )
         )
@@ -83,17 +95,25 @@ def run_single_objective_search(
     ranked = rank_single_objective_candidates(archive)
     polished_inputs = ranked[: profile.phase3_candidate_count]
     for polish_idx, candidate in enumerate(polished_inputs):
+        local_algo = pg.compass_search(
+            max_fevals=profile.phase3_compass_fevals,
+            start_range=0.01,
+            stop_range=1e-6,
+        )
         algo3 = pg.algorithm(
-            pg.compass_search(
-                max_fevals=profile.phase3_compass_fevals,
-                start_range=0.01,
-                stop_range=1e-8,
+            pg.mbh(
+                algo=local_algo,
+                stop=3 + profile.level,
+                perturb=0.05,
+                seed=base_seed + 40_000 + polish_idx,
             )
         )
         algo3.set_verbosity(0)
+        algo3.set_seed(base_seed + 45_000 + polish_idx)
         pop = pg.population(problem, size=1, seed=base_seed + 50_000 + polish_idx)
         pop.set_x(0, np.array(candidate["x"], dtype=float))
         pop = algo3.evolve(pop)
+        phase_fevals["phase3"] += pop.problem.get_fevals()
         archive.extend(
             apply_mission_filters(
                 collect_population_candidates(
@@ -101,6 +121,7 @@ def run_single_objective_search(
                     population=pop,
                     stage=f"phase3_polish_{polish_idx + 1}",
                 ),
+                udp=udp,
                 config=config,
             )
         )
@@ -116,6 +137,10 @@ def run_single_objective_search(
         "started_at_utc": started_at_utc,
         "runtime_seconds": run_elapsed,
         "base_seed": base_seed,
+        "evaluation_counts": {
+            **phase_fevals,
+            "total": sum(phase_fevals.values()),
+        },
         "archive": deduped,
         "top_candidates": top_candidates,
         "best_candidate": top_candidates[0],
@@ -183,11 +208,11 @@ def rank_single_objective_candidates(candidates: list[dict]) -> list[dict]:
     return sorted(feasible, key=lambda item: item["objective"])
 
 
-def apply_mission_filters(candidates: list[dict], config: SequenceConfig) -> list[dict]:
+def apply_mission_filters(candidates: list[dict], udp, config: SequenceConfig) -> list[dict]:
     n_legs = len(config.bodies) - 1
     filtered = []
     for candidate in candidates:
-        parsed = parse_decision_vector(np.array(candidate["x"], dtype=float), n_legs)
+        parsed = parse_decision_vector(udp, np.array(candidate["x"], dtype=float), n_legs)
         total_tof_days = float(sum(parsed["tofs_days"]))
         candidate["total_tof_days"] = total_tof_days
         candidate["c3_kms2"] = (parsed["vinf_dep_m_s"] / 1000.0) ** 2
@@ -219,9 +244,11 @@ def save_search_results(
             "started_at_utc": search_result["started_at_utc"],
             "runtime_seconds": search_result["runtime_seconds"],
             "base_seed": search_result["base_seed"],
+            "evaluation_counts": search_result["evaluation_counts"],
             "archive_size": len(search_result["archive"]),
             "top_candidate_count": len(search_result["top_candidates"]),
             "best_objective_m_s": search_result["best_candidate"]["objective"],
+            **get_git_metadata(run_dir),
         },
     )
     write_jsonl(run_dir / "all_candidates.jsonl", search_result["archive"])
@@ -243,6 +270,7 @@ def save_search_results(
             {
                 "rank": rank_idx,
                 "objective_m_s": candidate["objective"],
+                "objective_total_dv_kms": detail["summary"]["objective_total_dv_kms"],
                 "launch_epoch": detail["summary"]["launch_epoch"],
                 "arrival_epoch": detail["summary"]["arrival_epoch"],
                 "total_tof_years": detail["summary"]["total_tof_years"],
@@ -278,3 +306,27 @@ def to_jsonable(value):
     if isinstance(value, (np.floating, np.integer)):
         return value.item()
     return value
+
+
+def get_git_metadata(path: Path) -> dict[str, str | bool | None]:
+    try:
+        commit = subprocess.run(
+            ["git", "rev-parse", "HEAD"],
+            check=True,
+            capture_output=True,
+            text=True,
+            cwd=path,
+        )
+        dirty = subprocess.run(
+            ["git", "status", "--short"],
+            check=True,
+            capture_output=True,
+            text=True,
+            cwd=path,
+        )
+    except (OSError, subprocess.CalledProcessError):
+        return {"git_commit": None, "git_is_dirty": None}
+    return {
+        "git_commit": commit.stdout.strip() or None,
+        "git_is_dirty": bool(dirty.stdout.strip()),
+    }

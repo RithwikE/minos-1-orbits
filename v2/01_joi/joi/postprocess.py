@@ -2,7 +2,6 @@ from __future__ import annotations
 
 from contextlib import redirect_stdout
 from io import StringIO
-from math import pi
 import re
 
 import numpy as np
@@ -11,31 +10,32 @@ import pykep as pk
 from .config import SequenceConfig
 
 
-def vinf_vector_from_decision_vector(x: np.ndarray) -> np.ndarray:
-    vinf_ms = float(x[3])
-    theta = 2.0 * pi * float(x[1])
-    phi = np.arccos(2.0 * float(x[2]) - 1.0) - pi / 2.0
-    return np.array(
-        [
-            vinf_ms * np.cos(phi) * np.cos(theta),
-            vinf_ms * np.cos(phi) * np.sin(theta),
-            vinf_ms * np.sin(phi),
-        ],
-        dtype=float,
-    )
-
-
-def parse_decision_vector(x: np.ndarray, n_legs: int) -> dict:
-    return {
+def parse_decision_vector(udp, x: np.ndarray, n_legs: int) -> dict:
+    # pykep accepts constructor vinf bounds in km/s, but in the instantiated
+    # chromosome and internal decoders the departure vinf is handled in m/s.
+    tofs_days, vinfx, vinfy, vinfz = udp._decode_times_and_vinf(x.tolist())
+    vinf_dep_vec = np.array([vinfx, vinfy, vinfz], dtype=float)
+    parsed = {
         "t0_mjd2000": float(x[0]),
         "u": float(x[1]),
         "v": float(x[2]),
-        "vinf_dep_m_s": float(x[3]),
+        "vinf_dep_m_s": float(np.linalg.norm(vinf_dep_vec)),
+        "vinf_dep_vector_m_s": vinf_dep_vec.tolist(),
         "etas": [float(x[4 + 4 * idx]) for idx in range(n_legs)],
-        "tofs_days": [float(x[5 + 4 * idx]) for idx in range(n_legs)],
+        "tofs_days": [float(value) for value in tofs_days],
         "betas": [float(x[6 + 4 * idx]) for idx in range(n_legs - 1)],
         "rp_safe_radius_ratios": [float(x[7 + 4 * idx]) for idx in range(n_legs - 1)],
     }
+    if udp._tof_encoding == "alpha":
+        parsed["tof_alpha_parameters"] = [float(x[5 + 4 * idx]) for idx in range(n_legs)]
+        parsed["tof_total_days"] = float(x[-1])
+    elif udp._tof_encoding == "eta":
+        parsed["tof_eta_parameters"] = [float(x[5 + 4 * idx]) for idx in range(n_legs)]
+        parsed["tof_total_days"] = float(sum(tofs_days))
+        parsed["tof_eta_limit_days"] = float(udp._tof)
+    else:
+        parsed["tof_total_days"] = float(sum(tofs_days))
+    return parsed
 
 
 def pretty_output(udp, x: np.ndarray) -> str:
@@ -60,7 +60,7 @@ def pretty_metrics(udp, x: np.ndarray) -> dict:
 
 def reconstruct_candidate(udp, sequence: list, config: SequenceConfig, x: np.ndarray) -> dict:
     n_legs = len(sequence) - 1
-    parsed = parse_decision_vector(x, n_legs)
+    parsed = parse_decision_vector(udp, x, n_legs)
     t0_mjd2000 = parsed["t0_mjd2000"]
     tofs_days = parsed["tofs_days"]
     etas = parsed["etas"]
@@ -83,9 +83,12 @@ def reconstruct_candidate(udp, sequence: list, config: SequenceConfig, x: np.nda
             }
         )
 
-    vinf_dep_vec = vinf_vector_from_decision_vector(x)
     dv_values, lamberts, _, ballistic_legs, ballistic_epochs = udp._compute_dvs(x.tolist())
-    dsm_values_exact = [float(val) for val in dv_values[:n_legs]]
+    total_dv_values_m_s = [float(val) for val in dv_values]
+    pretty = pretty_metrics(udp, x)
+    dsm_values_exact = pretty["dsm_magnitudes_m_s"]
+    if len(dsm_values_exact) != n_legs:
+        dsm_values_exact = total_dv_values_m_s[:n_legs]
     arrival_vinf_exact = None
     if lamberts:
         final_arrival_velocity = np.array(lamberts[-1].get_v2()[0], dtype=float)
@@ -104,7 +107,8 @@ def reconstruct_candidate(udp, sequence: list, config: SequenceConfig, x: np.nda
             "spacecraft_velocity_m_s": np.array(ballistic_legs[0][1], dtype=float).tolist(),
             "planet_position_m": planet_states[0]["position_m"].tolist(),
             "planet_velocity_m_s": planet_states[0]["velocity_m_s"].tolist(),
-            "vinf_m_s": float(np.linalg.norm(vinf_dep_vec)),
+            "vinf_m_s": parsed["vinf_dep_m_s"],
+            "vinf_vector_m_s": parsed["vinf_dep_vector_m_s"],
         }
     ]
 
@@ -191,7 +195,6 @@ def reconstruct_candidate(udp, sequence: list, config: SequenceConfig, x: np.nda
             event["spacecraft_velocity_out_m_s"] = outgoing_velocity.tolist()
         events.append(event)
 
-    pretty = pretty_metrics(udp, x)
     total_dsm_m_s = float(sum(dsm_values_exact))
     arrival_vinf_m_s = float(arrival_vinf_exact if arrival_vinf_exact is not None else legs[-1]["arrival_vinf_m_s"])
     total_tof_days = float(sum(tofs_days))
@@ -214,9 +217,11 @@ def reconstruct_candidate(udp, sequence: list, config: SequenceConfig, x: np.nda
             "total_tof_years": total_tof_days * pk.DAY2YEAR,
             "vinf_dep_kms": parsed["vinf_dep_m_s"] / 1000.0,
             "c3_kms2": (parsed["vinf_dep_m_s"] / 1000.0) ** 2,
+            "objective_total_dv_kms": float(sum(total_dv_values_m_s)) / 1000.0,
             "total_dsm_kms": total_dsm_m_s / 1000.0,
             "dsm_per_leg_kms": [value / 1000.0 for value in dsm_values_exact],
             "arrival_vinf_kms": arrival_vinf_m_s / 1000.0,
+            "arrival_cost_kms": total_dv_values_m_s[-1] / 1000.0 if config.add_vinf_arr else 0.0,
             "pretty_total_tof_years": pretty["total_tof_years"],
         },
         "pretty_output": pretty["pretty_text"],
@@ -237,6 +242,8 @@ def sample_candidate_ephemeris(
     samples = []
     for offset_days in np.linspace(0.0, total_tof_days, sample_count):
         epoch = pk.epoch(t0_mjd2000 + float(offset_days), "mjd2000")
+        # The public doc example shows a pykep.epoch input, but this installed
+        # implementation expects the raw mjd2000 float and performs its own checks.
         position, velocity = eph(float(epoch.mjd2000))
         position = np.array(position, dtype=float)
         velocity = np.array(velocity, dtype=float)

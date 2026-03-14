@@ -9,6 +9,8 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
 
+AU_METERS = 149597870700.0
+
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Visualize a saved JOI candidate archive file.")
@@ -48,7 +50,7 @@ def main() -> None:
         dtype=float,
     )
     positions_au = np.array(
-        [[coord / 149597870700.0 for coord in sample["position_m"]] for sample in dense],
+        [[coord / AU_METERS for coord in sample["position_m"]] for sample in dense],
         dtype=float,
     )
     distances_au = np.array([sample["distance_to_sun_au"] for sample in dense], dtype=float)
@@ -83,7 +85,7 @@ def main() -> None:
 
     for event in events:
         event_day = float(event["epoch_mjd2000"] - dense[0]["epoch_mjd2000"])
-        event_position = np.array(event["spacecraft_position_m"], dtype=float) / 149597870700.0
+        event_position = np.array(event["spacecraft_position_m"], dtype=float) / AU_METERS
         label = f"{event['type']} {event['body'] or ''}".strip()
         ax_xy.scatter(event_position[0], event_position[1], s=20, color="#9b2226", zorder=6)
         ax_xz.scatter(event_position[0], event_position[2], s=20, color="#9b2226", zorder=6)
@@ -104,7 +106,7 @@ def main() -> None:
 
     fig, axes = plt.subplots(3, 1, figsize=(12, 10), sharex=True)
     orbital_keys = [
-        ("semi_major_axis_m", "Semi-major axis (AU)", 149597870700.0),
+        ("semi_major_axis_m", "Semi-major axis (AU)", AU_METERS),
         ("eccentricity", "Eccentricity", 1.0),
         ("inclination_rad", "Inclination (deg)", np.pi / 180.0),
     ]
