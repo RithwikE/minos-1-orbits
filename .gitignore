@@ -13,3 +13,13 @@ kernels/
 
 # Generated JOI search outputs
 v2/01_joi/results/
+v2/01_joi/docker-results/
+v2/01_joi/cloud-submissions/
+v2/01_joi/fetched-results/
+v2/01_joi/local-compare-results/
+v2/shared/cloud-submissions/
+v2/cloud_runs_active.csv
+v2/cloud_runs_done.csv
+
+# Local Docker client state used for smoke testing
+.codex-docker/

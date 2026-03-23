@@ -1,0 +1,202 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: "AWS Batch infrastructure for MINOS trajectory search runs"
+
+Parameters:
+  ProjectName:
+    Type: String
+    Default: minos-joi
+  VpcId:
+    Type: AWS::EC2::VPC::Id
+  SubnetIds:
+    Type: List<AWS::EC2::Subnet::Id>
+  ImageUri:
+    Type: String
+    Description: ECR image URI for the mission runner, including tag.
+  JobVcpus:
+    Type: Number
+    Default: 8
+  JobMemoryMiB:
+    Type: Number
+    Default: 16384
+  MaxvCpus:
+    Type: Number
+    Default: 64
+  InstanceTypes:
+    Type: CommaDelimitedList
+    Default: c7i.2xlarge,c7i.4xlarge,c7i.8xlarge,c7i.12xlarge,c7a.2xlarge,c7a.4xlarge,c7a.8xlarge,c7a.12xlarge,c6i.2xlarge,c6i.4xlarge,c6i.8xlarge,c6i.12xlarge
+  ArtifactsBucketName:
+    Type: String
+    Default: ""
+  AppRegistryApplication:
+    Type: String
+    Default: ""
+    Description: Optional AppRegistry application ID or name for stack association.
+
+Conditions:
+  UseGeneratedBucketName: !Equals [!Ref ArtifactsBucketName, ""]
+  HasAppRegistryApplication: !Not [!Equals [!Ref AppRegistryApplication, ""]]
+
+Resources:
+  BatchInstanceRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: ec2.amazonaws.com
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceforEC2Role
+        - arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly
+        - arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy
+        - arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore
+
+  BatchInstanceProfile:
+    Type: AWS::IAM::InstanceProfile
+    Properties:
+      Roles:
+        - !Ref BatchInstanceRole
+
+  BatchJobRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: ecs-tasks.amazonaws.com
+            Action: sts:AssumeRole
+      Policies:
+        - PolicyName: BatchJobArtifactsAccess
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - s3:GetObject
+                  - s3:PutObject
+                  - s3:DeleteObject
+                Resource:
+                  - !Sub "${ArtifactsBucket.Arn}/*"
+              - Effect: Allow
+                Action:
+                  - s3:ListBucket
+                Resource:
+                  - !GetAtt ArtifactsBucket.Arn
+
+  BatchSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: !Sub "${ProjectName} Batch security group"
+      VpcId: !Ref VpcId
+      SecurityGroupEgress:
+        - IpProtocol: -1
+          CidrIp: 0.0.0.0/0
+      Tags:
+        - Key: Name
+          Value: !Sub "${ProjectName}-batch-sg"
+
+  BatchLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: !Sub "/aws/batch/job/${ProjectName}"
+      RetentionInDays: 14
+
+  ArtifactsBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !If
+        - UseGeneratedBucketName
+        - !Sub "${ProjectName}-${AWS::AccountId}-${AWS::Region}-artifacts"
+        - !Ref ArtifactsBucketName
+      VersioningConfiguration:
+        Status: Enabled
+
+  RunnerRepository:
+    Type: AWS::ECR::Repository
+    Properties:
+      RepositoryName: !Sub "${ProjectName}-runner"
+      ImageScanningConfiguration:
+        ScanOnPush: true
+
+  BatchComputeEnvironment:
+    Type: AWS::Batch::ComputeEnvironment
+    Properties:
+      Type: MANAGED
+      State: ENABLED
+      ComputeResources:
+        Type: EC2
+        AllocationStrategy: BEST_FIT_PROGRESSIVE
+        MinvCpus: 0
+        DesiredvCpus: 0
+        MaxvCpus: !Ref MaxvCpus
+        InstanceTypes: !Ref InstanceTypes
+        InstanceRole: !Ref BatchInstanceProfile
+        SecurityGroupIds:
+          - !Ref BatchSecurityGroup
+        Subnets: !Ref SubnetIds
+        Tags:
+          Name: !Sub "${ProjectName}-batch"
+
+  BatchJobQueue:
+    Type: AWS::Batch::JobQueue
+    Properties:
+      JobQueueName: !Sub "${ProjectName}-job-queue"
+      State: ENABLED
+      Priority: 1
+      ComputeEnvironmentOrder:
+        - Order: 1
+          ComputeEnvironment: !Ref BatchComputeEnvironment
+
+  BatchJobDefinition:
+    Type: AWS::Batch::JobDefinition
+    Properties:
+      JobDefinitionName: !Sub "${ProjectName}-job-definition"
+      Type: container
+      PlatformCapabilities:
+        - EC2
+      RetryStrategy:
+        Attempts: 1
+      Timeout:
+        AttemptDurationSeconds: 86400
+      ContainerProperties:
+        Image: !Ref ImageUri
+        Vcpus: !Ref JobVcpus
+        Memory: !Ref JobMemoryMiB
+        JobRoleArn: !GetAtt BatchJobRole.Arn
+        Command:
+          - --help
+        Environment:
+          - Name: MPLCONFIGDIR
+            Value: /tmp/mplconfig
+          - Name: XDG_CACHE_HOME
+            Value: /tmp/xdg-cache
+        LogConfiguration:
+          LogDriver: awslogs
+          Options:
+            awslogs-group: !Ref BatchLogGroup
+            awslogs-region: !Ref AWS::Region
+            awslogs-stream-prefix: !Ref ProjectName
+
+  AppRegistryStackAssociation:
+    Type: AWS::ServiceCatalogAppRegistry::ResourceAssociation
+    Condition: HasAppRegistryApplication
+    Properties:
+      Application: !Ref AppRegistryApplication
+      Resource: !Ref AWS::StackId
+      ResourceType: CFN_STACK
+
+Outputs:
+  ArtifactsBucketName:
+    Value: !Ref ArtifactsBucket
+  BatchJobQueueName:
+    Value: !Ref BatchJobQueue
+  BatchJobDefinitionName:
+    Value: !Ref BatchJobDefinition
+  EcrRepositoryUri:
+    Value: !GetAtt RunnerRepository.RepositoryUri
+  BatchLogGroupName:
+    Value: !Ref BatchLogGroup

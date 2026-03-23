@@ -1,0 +1,25 @@
+{
+  "source": "v1/con_dr_evolved/output/04_output.txt",
+  "sequence": "04 VEEGA",
+  "notes": "Approximate decision vector reconstructed from the v1 VEEGA log output. This is a seed for the v2 search, not a provenance-perfect archival export.",
+  "decision_vector": [
+    12604.333392930117,
+    0.6108,
+    0.3588,
+    2973.9,
+    0.2550,
+    144.2798308075375,
+    -0.9576,
+    2.913039900922318,
+    0.8518,
+    627.5238680055289,
+    4.7903,
+    1.325320699783022,
+    0.4481,
+    828.1206051426689,
+    5.0202,
+    1.426335043827729,
+    0.2524,
+    951.3645974812208
+  ]
+}

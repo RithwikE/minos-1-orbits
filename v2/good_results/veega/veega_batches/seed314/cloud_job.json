@@ -1,0 +1,17 @@
+{
+  "git_commit": "cb6988b38fe5845cc8ae2fbe08ca94c2a27e574b",
+  "git_branch": "codex-cloud-architecture",
+  "git_is_dirty": true,
+  "execution_mode": "aws-batch",
+  "image_ref": "165159921038.dkr.ecr.us-east-1.amazonaws.com/minos-joi-runner:veega-campaign-20260315a",
+  "submitted_at_utc": "2026-03-15T13:17:19.808612+00:00",
+  "container_hostname": "ip-172-31-9-174.ec2.internal",
+  "config_path": "v2/01_joi/configs/veega_campaign.toml",
+  "config_sha256": "7b9fb4780f6fce3ebc8963b0e51a6427ef1215fc08c68d3bb8f4b0a0848c13a5",
+  "compute_level": 10,
+  "seed": 314,
+  "batch_job_id": "6e0a35c4-6d23-4cc0-9eb9-27e46e19a983",
+  "s3_output_prefix": "s3://minos-joi-165159921038-us-east-1-artifacts/joi-runs/joi-veega_campaign-l10-s314-20260315t131718z/output",
+  "metadata_recorded_at_utc": "2026-03-15T21:38:22.794429+00:00",
+  "config_s3_uri": "s3://minos-joi-165159921038-us-east-1-artifacts/joi-runs/joi-veega_campaign-l10-s314-20260315t131718z/input/veega_campaign.toml"
+}

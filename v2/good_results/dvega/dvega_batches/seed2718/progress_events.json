@@ -1,0 +1,681 @@
+[
+  {
+    "event": "search_started",
+    "timestamp_utc": "2026-03-15T23:11:54.361044+00:00",
+    "elapsed_seconds": 9.0380000017376e-06,
+    "archive_size": 0,
+    "fevals": {
+      "phase1": 0,
+      "phase2": 0,
+      "phase3": 0,
+      "total": 0
+    },
+    "profile_level": 10
+  },
+  {
+    "event": "seed_candidates_loaded",
+    "timestamp_utc": "2026-03-15T23:11:54.898024+00:00",
+    "elapsed_seconds": 0.537003576999993,
+    "archive_size": 1,
+    "fevals": {
+      "phase1": 0,
+      "phase2": 0,
+      "phase3": 0,
+      "total": 0
+    },
+    "profile_level": 10,
+    "completed": 1,
+    "total": 1,
+    "best_objective_m_s": 1961.3965200915968,
+    "best_c3_kms2": 15.000000000000002,
+    "best_total_tof_days": 2169.695302799958
+  },
+  {
+    "event": "phase1_round_complete",
+    "timestamp_utc": "2026-03-15T23:12:08.014380+00:00",
+    "elapsed_seconds": 13.653358807000004,
+    "archive_size": 3841,
+    "fevals": {
+      "phase1": 2307920,
+      "phase2": 0,
+      "phase3": 0,
+      "total": 2307920
+    },
+    "profile_level": 10,
+    "completed": 1,
+    "total": 10,
+    "best_objective_m_s": 1961.3965200915968,
+    "best_c3_kms2": 15.000000000000002,
+    "best_total_tof_days": 2169.695302799958
+  },
+  {
+    "event": "phase1_round_complete",
+    "timestamp_utc": "2026-03-15T23:12:17.726092+00:00",
+    "elapsed_seconds": 23.365069585,
+    "archive_size": 7681,
+    "fevals": {
+      "phase1": 4611920,
+      "phase2": 0,
+      "phase3": 0,
+      "total": 4611920
+    },
+    "profile_level": 10,
+    "completed": 2,
+    "total": 10,
+    "best_objective_m_s": 1961.3965200915968,
+    "best_c3_kms2": 15.000000000000002,
+    "best_total_tof_days": 2169.695302799958
+  },
+  {
+    "event": "phase1_round_complete",
+    "timestamp_utc": "2026-03-15T23:12:27.368330+00:00",
+    "elapsed_seconds": 33.007310491,
+    "archive_size": 11521,
+    "fevals": {
+      "phase1": 6915920,
+      "phase2": 0,
+      "phase3": 0,
+      "total": 6915920
+    },
+    "profile_level": 10,
+    "completed": 3,
+    "total": 10,
+    "best_objective_m_s": 1961.3965200915968,
+    "best_c3_kms2": 15.000000000000002,
+    "best_total_tof_days": 2169.695302799958
+  },
+  {
+    "event": "phase1_round_complete",
+    "timestamp_utc": "2026-03-15T23:12:36.766321+00:00",
+    "elapsed_seconds": 42.405298481,
+    "archive_size": 15361,
+    "fevals": {
+      "phase1": 9219920,
+      "phase2": 0,
+      "phase3": 0,
+      "total": 9219920
+    },
+    "profile_level": 10,
+    "completed": 4,
+    "total": 10,
+    "best_objective_m_s": 1961.3965200915968,
+    "best_c3_kms2": 15.000000000000002,
+    "best_total_tof_days": 2169.695302799958
+  },
+  {
+    "event": "phase1_round_complete",
+    "timestamp_utc": "2026-03-15T23:12:46.012210+00:00",
+    "elapsed_seconds": 51.651189371,
+    "archive_size": 19201,
+    "fevals": {
+      "phase1": 11523920,
+      "phase2": 0,
+      "phase3": 0,
+      "total": 11523920
+    },
+    "profile_level": 10,
+    "completed": 5,
+    "total": 10,
+    "best_objective_m_s": 1961.3965200915968,
+    "best_c3_kms2": 15.000000000000002,
+    "best_total_tof_days": 2169.695302799958
+  },
+  {
+    "event": "phase1_round_complete",
+    "timestamp_utc": "2026-03-15T23:12:55.517603+00:00",
+    "elapsed_seconds": 61.156582902,
+    "archive_size": 23041,
+    "fevals": {
+      "phase1": 13827920,
+      "phase2": 0,
+      "phase3": 0,
+      "total": 13827920
+    },
+    "profile_level": 10,
+    "completed": 6,
+    "total": 10,
+    "best_objective_m_s": 1961.3965200915968,
+    "best_c3_kms2": 15.000000000000002,
+    "best_total_tof_days": 2169.695302799958
+  },
+  {
+    "event": "phase1_round_complete",
+    "timestamp_utc": "2026-03-15T23:13:05.053040+00:00",
+    "elapsed_seconds": 70.69202276499999,
+    "archive_size": 26881,
+    "fevals": {
+      "phase1": 16131920,
+      "phase2": 0,
+      "phase3": 0,
+      "total": 16131920
+    },
+    "profile_level": 10,
+    "completed": 7,
+    "total": 10,
+    "best_objective_m_s": 1961.3965200915968,
+    "best_c3_kms2": 15.000000000000002,
+    "best_total_tof_days": 2169.695302799958
+  },
+  {
+    "event": "phase1_round_complete",
+    "timestamp_utc": "2026-03-15T23:13:14.053679+00:00",
+    "elapsed_seconds": 79.692657671,
+    "archive_size": 30721,
+    "fevals": {
+      "phase1": 18435920,
+      "phase2": 0,
+      "phase3": 0,
+      "total": 18435920
+    },
+    "profile_level": 10,
+    "completed": 8,
+    "total": 10,
+    "best_objective_m_s": 1961.3965200915968,
+    "best_c3_kms2": 15.000000000000002,
+    "best_total_tof_days": 2169.695302799958
+  },
+  {
+    "event": "phase1_round_complete",
+    "timestamp_utc": "2026-03-15T23:13:23.390210+00:00",
+    "elapsed_seconds": 89.02918922699999,
+    "archive_size": 34561,
+    "fevals": {
+      "phase1": 20739920,
+      "phase2": 0,
+      "phase3": 0,
+      "total": 20739920
+    },
+    "profile_level": 10,
+    "completed": 9,
+    "total": 10,
+    "best_objective_m_s": 1961.3965200915968,
+    "best_c3_kms2": 15.000000000000002,
+    "best_total_tof_days": 2169.695302799958
+  },
+  {
+    "event": "phase1_round_complete",
+    "timestamp_utc": "2026-03-15T23:13:32.806926+00:00",
+    "elapsed_seconds": 98.445909771,
+    "archive_size": 38401,
+    "fevals": {
+      "phase1": 23018288,
+      "phase2": 0,
+      "phase3": 0,
+      "total": 23018288
+    },
+    "profile_level": 10,
+    "completed": 10,
+    "total": 10,
+    "best_objective_m_s": 1961.3965200915968,
+    "best_c3_kms2": 15.000000000000002,
+    "best_total_tof_days": 2169.695302799958
+  },
+  {
+    "event": "phase2_seed_complete",
+    "timestamp_utc": "2026-03-15T23:13:47.613431+00:00",
+    "elapsed_seconds": 113.252412171,
+    "archive_size": 38593,
+    "fevals": {
+      "phase1": 23018288,
+      "phase2": 442088,
+      "phase3": 0,
+      "total": 23460376
+    },
+    "profile_level": 10,
+    "completed": 4,
+    "total": 80,
+    "best_objective_m_s": 1961.3965200915968,
+    "best_c3_kms2": 15.000000000000002,
+    "best_total_tof_days": 2169.695302799958
+  },
+  {
+    "event": "phase2_seed_complete",
+    "timestamp_utc": "2026-03-15T23:14:01.951863+00:00",
+    "elapsed_seconds": 127.590845102,
+    "archive_size": 38785,
+    "fevals": {
+      "phase1": 23018288,
+      "phase2": 884944,
+      "phase3": 0,
+      "total": 23903232
+    },
+    "profile_level": 10,
+    "completed": 8,
+    "total": 80,
+    "best_objective_m_s": 1961.3965200915968,
+    "best_c3_kms2": 15.000000000000002,
+    "best_total_tof_days": 2169.695302799958
+  },
+  {
+    "event": "phase2_seed_complete",
+    "timestamp_utc": "2026-03-15T23:14:17.082677+00:00",
+    "elapsed_seconds": 142.721659443,
+    "archive_size": 38977,
+    "fevals": {
+      "phase1": 23018288,
+      "phase2": 1328568,
+      "phase3": 0,
+      "total": 24346856
+    },
+    "profile_level": 10,
+    "completed": 12,
+    "total": 80,
+    "best_objective_m_s": 1961.3965200915968,
+    "best_c3_kms2": 15.000000000000002,
+    "best_total_tof_days": 2169.695302799958
+  },
+  {
+    "event": "phase2_seed_complete",
+    "timestamp_utc": "2026-03-15T23:14:31.586472+00:00",
+    "elapsed_seconds": 157.225455913,
+    "archive_size": 39169,
+    "fevals": {
+      "phase1": 23018288,
+      "phase2": 1772960,
+      "phase3": 0,
+      "total": 24791248
+    },
+    "profile_level": 10,
+    "completed": 16,
+    "total": 80,
+    "best_objective_m_s": 1961.3965200915968,
+    "best_c3_kms2": 15.000000000000002,
+    "best_total_tof_days": 2169.695302799958
+  },
+  {
+    "event": "phase2_seed_complete",
+    "timestamp_utc": "2026-03-15T23:14:46.125409+00:00",
+    "elapsed_seconds": 171.764392977,
+    "archive_size": 39361,
+    "fevals": {
+      "phase1": 23018288,
+      "phase2": 2218120,
+      "phase3": 0,
+      "total": 25236408
+    },
+    "profile_level": 10,
+    "completed": 20,
+    "total": 80,
+    "best_objective_m_s": 1961.3965200915968,
+    "best_c3_kms2": 15.000000000000002,
+    "best_total_tof_days": 2169.695302799958
+  },
+  {
+    "event": "phase2_seed_complete",
+    "timestamp_utc": "2026-03-15T23:15:00.719636+00:00",
+    "elapsed_seconds": 186.358618885,
+    "archive_size": 39553,
+    "fevals": {
+      "phase1": 23018288,
+      "phase2": 2664048,
+      "phase3": 0,
+      "total": 25682336
+    },
+    "profile_level": 10,
+    "completed": 24,
+    "total": 80,
+    "best_objective_m_s": 1961.3965200915968,
+    "best_c3_kms2": 15.000000000000002,
+    "best_total_tof_days": 2169.695302799958
+  },
+  {
+    "event": "phase2_seed_complete",
+    "timestamp_utc": "2026-03-15T23:15:15.347165+00:00",
+    "elapsed_seconds": 200.98614826300002,
+    "archive_size": 39745,
+    "fevals": {
+      "phase1": 23018288,
+      "phase2": 3110744,
+      "phase3": 0,
+      "total": 26129032
+    },
+    "profile_level": 10,
+    "completed": 28,
+    "total": 80,
+    "best_objective_m_s": 1961.3965200915968,
+    "best_c3_kms2": 15.000000000000002,
+    "best_total_tof_days": 2169.695302799958
+  },
+  {
+    "event": "phase2_seed_complete",
+    "timestamp_utc": "2026-03-15T23:15:30.599947+00:00",
+    "elapsed_seconds": 216.238928225,
+    "archive_size": 39937,
+    "fevals": {
+      "phase1": 23018288,
+      "phase2": 3558208,
+      "phase3": 0,
+      "total": 26576496
+    },
+    "profile_level": 10,
+    "completed": 32,
+    "total": 80,
+    "best_objective_m_s": 1961.3965200915968,
+    "best_c3_kms2": 15.000000000000002,
+    "best_total_tof_days": 2169.695302799958
+  },
+  {
+    "event": "phase2_seed_complete",
+    "timestamp_utc": "2026-03-15T23:15:45.250367+00:00",
+    "elapsed_seconds": 230.88934866300002,
+    "archive_size": 40129,
+    "fevals": {
+      "phase1": 23018288,
+      "phase2": 4006440,
+      "phase3": 0,
+      "total": 27024728
+    },
+    "profile_level": 10,
+    "completed": 36,
+    "total": 80,
+    "best_objective_m_s": 1961.3965200915968,
+    "best_c3_kms2": 15.000000000000002,
+    "best_total_tof_days": 2169.695302799958
+  },
+  {
+    "event": "phase2_seed_complete",
+    "timestamp_utc": "2026-03-15T23:15:59.767451+00:00",
+    "elapsed_seconds": 245.40643304000002,
+    "archive_size": 40321,
+    "fevals": {
+      "phase1": 23018288,
+      "phase2": 4455440,
+      "phase3": 0,
+      "total": 27473728
+    },
+    "profile_level": 10,
+    "completed": 40,
+    "total": 80,
+    "best_objective_m_s": 1961.3965200915968,
+    "best_c3_kms2": 15.000000000000002,
+    "best_total_tof_days": 2169.695302799958
+  },
+  {
+    "event": "phase2_seed_complete",
+    "timestamp_utc": "2026-03-15T23:16:14.333162+00:00",
+    "elapsed_seconds": 259.972144914,
+    "archive_size": 40513,
+    "fevals": {
+      "phase1": 23018288,
+      "phase2": 4905208,
+      "phase3": 0,
+      "total": 27923496
+    },
+    "profile_level": 10,
+    "completed": 44,
+    "total": 80,
+    "best_objective_m_s": 1961.3965200915968,
+    "best_c3_kms2": 15.000000000000002,
+    "best_total_tof_days": 2169.695302799958
+  },
+  {
+    "event": "phase2_seed_complete",
+    "timestamp_utc": "2026-03-15T23:16:28.871349+00:00",
+    "elapsed_seconds": 274.510331556,
+    "archive_size": 40705,
+    "fevals": {
+      "phase1": 23018288,
+      "phase2": 5355744,
+      "phase3": 0,
+      "total": 28374032
+    },
+    "profile_level": 10,
+    "completed": 48,
+    "total": 80,
+    "best_objective_m_s": 1961.3965200915968,
+    "best_c3_kms2": 15.000000000000002,
+    "best_total_tof_days": 2169.695302799958
+  },
+  {
+    "event": "phase2_seed_complete",
+    "timestamp_utc": "2026-03-15T23:16:43.995837+00:00",
+    "elapsed_seconds": 289.634818938,
+    "archive_size": 40897,
+    "fevals": {
+      "phase1": 23018288,
+      "phase2": 5807048,
+      "phase3": 0,
+      "total": 28825336
+    },
+    "profile_level": 10,
+    "completed": 52,
+    "total": 80,
+    "best_objective_m_s": 1961.3965200915968,
+    "best_c3_kms2": 15.000000000000002,
+    "best_total_tof_days": 2169.695302799958
+  },
+  {
+    "event": "phase2_seed_complete",
+    "timestamp_utc": "2026-03-15T23:16:58.642172+00:00",
+    "elapsed_seconds": 304.281153414,
+    "archive_size": 41089,
+    "fevals": {
+      "phase1": 23018288,
+      "phase2": 6259120,
+      "phase3": 0,
+      "total": 29277408
+    },
+    "profile_level": 10,
+    "completed": 56,
+    "total": 80,
+    "best_objective_m_s": 1961.3965200915968,
+    "best_c3_kms2": 15.000000000000002,
+    "best_total_tof_days": 2169.695302799958
+  },
+  {
+    "event": "phase2_seed_complete",
+    "timestamp_utc": "2026-03-15T23:17:13.282115+00:00",
+    "elapsed_seconds": 318.92109593,
+    "archive_size": 41281,
+    "fevals": {
+      "phase1": 23018288,
+      "phase2": 6711960,
+      "phase3": 0,
+      "total": 29730248
+    },
+    "profile_level": 10,
+    "completed": 60,
+    "total": 80,
+    "best_objective_m_s": 1961.3965200915968,
+    "best_c3_kms2": 15.000000000000002,
+    "best_total_tof_days": 2169.695302799958
+  },
+  {
+    "event": "phase2_seed_complete",
+    "timestamp_utc": "2026-03-15T23:17:27.814071+00:00",
+    "elapsed_seconds": 333.453053125,
+    "archive_size": 41473,
+    "fevals": {
+      "phase1": 23018288,
+      "phase2": 7165568,
+      "phase3": 0,
+      "total": 30183856
+    },
+    "profile_level": 10,
+    "completed": 64,
+    "total": 80,
+    "best_objective_m_s": 1961.3965200915968,
+    "best_c3_kms2": 15.000000000000002,
+    "best_total_tof_days": 2169.695302799958
+  },
+  {
+    "event": "phase2_seed_complete",
+    "timestamp_utc": "2026-03-15T23:17:42.263287+00:00",
+    "elapsed_seconds": 347.902268891,
+    "archive_size": 41665,
+    "fevals": {
+      "phase1": 23018288,
+      "phase2": 7619944,
+      "phase3": 0,
+      "total": 30638232
+    },
+    "profile_level": 10,
+    "completed": 68,
+    "total": 80,
+    "best_objective_m_s": 1961.3965200915968,
+    "best_c3_kms2": 15.000000000000002,
+    "best_total_tof_days": 2169.695302799958
+  },
+  {
+    "event": "phase2_seed_complete",
+    "timestamp_utc": "2026-03-15T23:17:57.294843+00:00",
+    "elapsed_seconds": 362.933823402,
+    "archive_size": 41857,
+    "fevals": {
+      "phase1": 23018288,
+      "phase2": 8075088,
+      "phase3": 0,
+      "total": 31093376
+    },
+    "profile_level": 10,
+    "completed": 72,
+    "total": 80,
+    "best_objective_m_s": 1961.3965200915968,
+    "best_c3_kms2": 15.000000000000002,
+    "best_total_tof_days": 2169.695302799958
+  },
+  {
+    "event": "phase2_seed_complete",
+    "timestamp_utc": "2026-03-15T23:18:11.817156+00:00",
+    "elapsed_seconds": 377.456138152,
+    "archive_size": 42049,
+    "fevals": {
+      "phase1": 23018288,
+      "phase2": 8531000,
+      "phase3": 0,
+      "total": 31549288
+    },
+    "profile_level": 10,
+    "completed": 76,
+    "total": 80,
+    "best_objective_m_s": 1961.3965200915968,
+    "best_c3_kms2": 15.000000000000002,
+    "best_total_tof_days": 2169.695302799958
+  },
+  {
+    "event": "phase2_seed_complete",
+    "timestamp_utc": "2026-03-15T23:18:26.315221+00:00",
+    "elapsed_seconds": 391.954203119,
+    "archive_size": 42241,
+    "fevals": {
+      "phase1": 23018288,
+      "phase2": 8987680,
+      "phase3": 0,
+      "total": 32005968
+    },
+    "profile_level": 10,
+    "completed": 80,
+    "total": 80,
+    "best_objective_m_s": 1961.3965200915968,
+    "best_c3_kms2": 15.000000000000002,
+    "best_total_tof_days": 2169.695302799958
+  },
+  {
+    "event": "phase2_complete",
+    "timestamp_utc": "2026-03-15T23:18:26.339897+00:00",
+    "elapsed_seconds": 391.978879604,
+    "archive_size": 42241,
+    "fevals": {
+      "phase1": 23018288,
+      "phase2": 8987680,
+      "phase3": 0,
+      "total": 32005968
+    },
+    "profile_level": 10,
+    "completed": 80,
+    "total": 80,
+    "best_objective_m_s": 1961.3965200915968,
+    "best_c3_kms2": 15.000000000000002,
+    "best_total_tof_days": 2169.695302799958
+  },
+  {
+    "event": "phase3_polish_complete",
+    "timestamp_utc": "2026-03-15T23:36:40.457948+00:00",
+    "elapsed_seconds": 1486.096930229,
+    "archive_size": 42245,
+    "fevals": {
+      "phase1": 23018288,
+      "phase2": 8987680,
+      "phase3": 22199098,
+      "total": 54205066
+    },
+    "profile_level": 10,
+    "completed": 4,
+    "total": 16,
+    "best_objective_m_s": 1961.3965200915968,
+    "best_c3_kms2": 15.000000000000002,
+    "best_total_tof_days": 2169.695302799958
+  },
+  {
+    "event": "phase3_polish_complete",
+    "timestamp_utc": "2026-03-16T00:02:14.120356+00:00",
+    "elapsed_seconds": 3019.7593371069997,
+    "archive_size": 42249,
+    "fevals": {
+      "phase1": 23018288,
+      "phase2": 8987680,
+      "phase3": 53414999,
+      "total": 85420967
+    },
+    "profile_level": 10,
+    "completed": 8,
+    "total": 16,
+    "best_objective_m_s": 1961.3965200915968,
+    "best_c3_kms2": 15.000000000000002,
+    "best_total_tof_days": 2169.695302799958
+  },
+  {
+    "event": "phase3_polish_complete",
+    "timestamp_utc": "2026-03-16T00:27:08.335955+00:00",
+    "elapsed_seconds": 4513.974936384,
+    "archive_size": 42253,
+    "fevals": {
+      "phase1": 23018288,
+      "phase2": 8987680,
+      "phase3": 83961326,
+      "total": 115967294
+    },
+    "profile_level": 10,
+    "completed": 12,
+    "total": 16,
+    "best_objective_m_s": 1961.3965200915968,
+    "best_c3_kms2": 15.000000000000002,
+    "best_total_tof_days": 2169.695302799958
+  },
+  {
+    "event": "phase3_polish_complete",
+    "timestamp_utc": "2026-03-16T00:48:26.707515+00:00",
+    "elapsed_seconds": 5792.346497531,
+    "archive_size": 42257,
+    "fevals": {
+      "phase1": 23018288,
+      "phase2": 8987680,
+      "phase3": 109737683,
+      "total": 141743651
+    },
+    "profile_level": 10,
+    "completed": 16,
+    "total": 16,
+    "best_objective_m_s": 1961.3965200915968,
+    "best_c3_kms2": 15.000000000000002,
+    "best_total_tof_days": 2169.695302799958
+  },
+  {
+    "event": "search_complete",
+    "timestamp_utc": "2026-03-16T00:48:27.500111+00:00",
+    "elapsed_seconds": 5793.139090081,
+    "archive_size": 39576,
+    "fevals": {
+      "phase1": 23018288,
+      "phase2": 8987680,
+      "phase3": 109737683,
+      "total": 141743651
+    },
+    "profile_level": 10,
+    "completed": 100,
+    "total": 100,
+    "best_objective_m_s": 1961.3965200915968,
+    "best_c3_kms2": 15.000000000000002,
+    "best_total_tof_days": 2169.695302799958
+  }
+]

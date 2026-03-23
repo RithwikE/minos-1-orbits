@@ -1,0 +1,17 @@
+{
+  "started_at_utc": "2026-03-15T23:11:54.361024+00:00",
+  "runtime_seconds": 5793.128134834,
+  "base_seed": 2718,
+  "evaluation_counts": {
+    "phase1": 23018288,
+    "phase2": 8987680,
+    "phase3": 109737683,
+    "total": 141743651
+  },
+  "archive_size": 39576,
+  "top_candidate_count": 100,
+  "best_objective_m_s": 1961.3965200915968,
+  "git_commit": "cb6988b38fe5845cc8ae2fbe08ca94c2a27e574b",
+  "git_branch": "codex-cloud-architecture",
+  "git_is_dirty": true
+}

@@ -1,0 +1,14 @@
+{
+  "level": 10,
+  "phase1_islands": 80,
+  "phase1_pop_size": 48,
+  "phase1_generations": 600,
+  "phase1_rounds": 10,
+  "phase2_seed_count": 80,
+  "phase2_pop_size": 48,
+  "phase2_generations": 1500,
+  "phase3_candidate_count": 16,
+  "phase3_compass_fevals": 600000,
+  "archive_top_n": 100,
+  "log_frequency": 4
+}

@@ -1,0 +1,128 @@
+pykep {'major': 2, 'minor': 6}  |  pygmo 2.19.7
+
+============================================================
+  OPTIMISING: ΔV-EGA (E-E-J)
+============================================================
+Problem name: MGA_1DSM Trajectory
+        C++ class name: pybind11::object
+
+        Global dimension:                       10
+        Integer dimension:                      0
+        Fitness dimension:                      1
+        Number of objectives:                   1
+        Equality constraints dimension:         0
+        Inequality constraints dimension:       0
+        Lower bounds: [10958, 0, 0, 3000, 0.1, ... ]
+        Upper bounds: [13880, 1, 1, 5500, 0.9, ... ]
+        Has batch fitness evaluation: false
+
+        Has gradient: false
+        User implemented gradient sparsity: false
+        Has hessians: false
+        User implemented hessians sparsity: false
+
+        Fitness evaluations: 0
+
+        Thread safety: none
+
+Extra info:
+
+         Sequence: ['earth', 'earth', 'jupiter']
+         Add launcher vinf to the objective?: False
+         Add final vinf to the objective?: False
+
+Phase 1: 96 islands × 32 pop × 500 gen × 8 rounds
+  Round 1/8: best = 1.2936 km/s
+  Round 2/8: best = 1.0122 km/s
+  Round 3/8: best = 0.8949 km/s
+  Round 4/8: best = 0.6028 km/s
+  Round 5/8: best = 0.5787 km/s
+  Round 6/8: best = 0.5599 km/s
+  Round 7/8: best = 0.5488 km/s
+  Round 8/8: best = 0.5425 km/s
+
+Phase 1 done. Top 5:
+  #1: 0.5425 km/s
+  #2: 0.5567 km/s
+  #3: 0.5705 km/s
+  #4: 0.5733 km/s
+  #5: 0.5741 km/s
+
+Phase 2: refining top 50 seeds (1500 gen each)
+  10/50 done, best = 0.5424 km/s
+  20/50 done, best = 0.5424 km/s
+  30/50 done, best = 0.5424 km/s
+  40/50 done, best = 0.5424 km/s
+  50/50 done, best = 0.5424 km/s
+
+Phase 3: Compass Search (200,000 fevals)
+
+  ✓ Final objective: 0.5424 km/s
+
+============================================================
+  ΔV-EGA — pykep pretty() output
+============================================================
+First Leg: earth to earth
+Departure: 2032-May-08 12:26:32.900509 (11816.51843634848 mjd2000)
+Duration: 777.5816618958696days
+VINF: 5.327946417442969 km/sec
+DSM after 363.87864050294087 days
+DSM magnitude: 542.245720727424m/s
+
+leg no. 2: earth to jupiter
+Duration: 869.4735829208809days
+Fly-by epoch: 2034-Jun-25 02:24:08.488312 (12594.10009824435 mjd2000)
+Fly-by radius: 1.1 planetary radii
+DSM after 194.73528753803234 days
+DSM magnitude: 0.1531425269201639m/s
+
+Arrival at jupiter
+Arrival epoch: 2036-Nov-10 13:46:06.052676 (13463.573681165231 mjd2000)
+Arrival Vinf: 5797.044385447258m/s
+Total mission time: 4.509391498471596 years (1647.0552448167505 days)
+
+============================================================
+  02 ΔV-EGA — TRADE STUDY SUMMARY
+============================================================
+  Launch:             2032-May-08 12:26:32.900509
+  Arrival:            2036-Nov-10 13:46:06.052676
+  TOF:                4.51 yr
+  C3:                 28.39 km²/s²
+  V∞ dep:             5.328 km/s
+  Delivered mass:     12690 kg
+  Total DSMs:         0.5424 km/s
+  DSMs per leg:       0.5422;0.0002 km/s
+  V∞ arrival (Jup):   5.797 km/s
+  Objective (Σ DSMs): 0.5424 km/s
+  Flybys:             earth
+  Flyby dates:        2034-Jun-25 02:24:08.488312
+  Flyby altitudes:    1339 km
+  Leg TOFs:           777.6;869.5 days
+  --- Reference ---
+  Study:              2016 SDT ΔV-EGA
+  Ref C3:             25–30 km²/s²
+  Ref DSM:            ~0.3 (aphelion DSM) km/s
+  Ref V∞ arr:         ~6 (at Ganymede G0) km/s
+  Ref TOF:            4.5–5.0 yr
+  Notes:              SLS launch; 2:1 resonance ΔV-EGA; C3 provided by LV
+============================================================
+
+Bounds check:
+  V∞ dep: 3.0 ≤ 5.33 ≤ 5.5 km/s  ✓
+  T1: 300 ≤ 778 ≤ 1100 days  ✓
+  T2: 400 ≤ 869 ≤ 2200 days  ✓
+  Saved: /Users/ike/Desktop/Purdue/2025-2026/AAE450/minos-1-orbits/con_dr_evolved/output/02_trajectory_dvega.png
+  → Saved '02 ΔV-EGA' to /Users/ike/Desktop/Purdue/2025-2026/AAE450/minos-1-orbits/con_dr_evolved/output/trade_study_results.csv
+
+Decision vector breakdown:
+  t0 (mjd2000):       11816.52
+  u, v (V∞ dir):      0.8783, 0.5017
+  V∞ dep:             5327.9 m/s = 5.328 km/s
+  Leg 1: η=0.4680, T=777.6 d (2.13 yr)
+         β=4.5263 rad, rp/safe_r=1.1000
+  Leg 2: η=0.2240, T=869.5 d (2.38 yr)
+
+  Objective (m/s): 542.4
+  Objective (km/s): 0.5424
+  → This = Σ(DSMs) only. Arrival V∞ = 5.797 km/s (NOT included).
+  → C3 = 28.4 → FH delivers 12690 kg
