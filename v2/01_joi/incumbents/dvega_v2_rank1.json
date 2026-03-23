@@ -1,0 +1,17 @@
+{
+  "decision_vector": [
+    13809.610377187419,
+    0.39504678767621393,
+    0.5002221767959304,
+    3872.983346207417,
+    0.7238058402926223,
+    1177.6535004653433,
+    -1.566115314316368,
+    1.1,
+    0.1,
+    992.0418023346149
+  ],
+  "source": "v2 current feasible DVEGA incumbent",
+  "source_run": "v2/01_joi/fetched-results/3359beab-aaa9-4496-8cfd-0befd5378e02/20260315T012503Z_dvega_L10/candidate_details/rank_001.json",
+  "notes": "Use as incumbent seed for bounded DVEGA cloud campaigns under the current C3 <= 15 mission formulation."
+}

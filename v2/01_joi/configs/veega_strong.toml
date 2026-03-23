@@ -1,0 +1,49 @@
+name = "veega"
+label = "04 VEEGA"
+bodies = ["earth", "venus", "earth", "earth", "jupiter"]
+departure_start = "2030-01-01 00:00:00"
+departure_end = "2038-01-01 00:00:00"
+vinf_kms_min = 0.0
+max_c3_kms2 = 15.0
+max_total_tof_days = 3652.5
+objective = "total_dsm"
+tof_encoding = "direct"
+add_vinf_dep = false
+add_vinf_arr = false
+multi_objective = false
+top_n = 100
+dense_output_samples_per_leg = 128
+notes = "High-budget VEEGA search tuned to exceed the old v1 deep-dive budget while preserving the v2 C3 <= 15 mission formulation."
+seed_candidate_paths = ["../incumbents/veega_v1_rank1.json"]
+
+[[tof_days]]
+min = 80
+max = 600
+
+[[tof_days]]
+min = 80
+max = 900
+
+[[tof_days]]
+min = 150
+max = 900
+
+[[tof_days]]
+min = 500
+max = 1250
+
+[search]
+phase1_islands = 192
+phase1_pop_size = 64
+phase1_generations = 1200
+phase1_rounds = 16
+phase2_seed_count = 128
+phase2_pop_size = 64
+phase2_generations = 4000
+phase3_candidate_count = 24
+phase3_compass_fevals = 1500000
+archive_top_n = 100
+
+[metadata]
+family = "veega"
+reference = "v1 04_veega incumbent plus stronger-than-v1 search budget"

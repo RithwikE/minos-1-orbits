@@ -1,0 +1,50 @@
+name = "veega"
+label = "04 VEEGA"
+bodies = ["earth", "venus", "earth", "earth", "jupiter"]
+departure_start = "2030-01-01 00:00:00"
+departure_end = "2038-01-01 00:00:00"
+vinf_kms_min = 0.0
+max_c3_kms2 = 15.0
+max_total_tof_days = 3652.5
+objective = "total_dsm"
+tof_encoding = "direct"
+add_vinf_dep = false
+add_vinf_arr = false
+multi_objective = false
+top_n = 100
+dense_output_samples_per_leg = 128
+notes = "Bounded VEEGA recovery campaign: incumbent-seeded, visibly logged, and materially stronger than the baseline v2 level-10 run without another runaway monolithic budget."
+seed_candidate_paths = ["../incumbents/veega_v1_rank1.json"]
+
+[[tof_days]]
+min = 80
+max = 600
+
+[[tof_days]]
+min = 80
+max = 900
+
+[[tof_days]]
+min = 150
+max = 900
+
+[[tof_days]]
+min = 500
+max = 1250
+
+[search]
+phase1_islands = 64
+phase1_pop_size = 48
+phase1_generations = 700
+phase1_rounds = 12
+phase2_seed_count = 96
+phase2_pop_size = 48
+phase2_generations = 2000
+phase3_candidate_count = 16
+phase3_compass_fevals = 750000
+archive_top_n = 100
+log_frequency = 4
+
+[metadata]
+family = "veega"
+reference = "bounded incumbent-seeded recovery campaign after oversized strong run cancellation"

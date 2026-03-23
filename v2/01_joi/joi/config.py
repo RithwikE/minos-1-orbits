@@ -5,11 +5,35 @@ from math import sqrt
 from pathlib import Path
 import tomllib
 
+from shared.search import ComputeProfile, build_compute_profile, override_compute_profile
+
 
 @dataclass(slots=True)
 class LegBounds:
     minimum_days: float
     maximum_days: float
+
+
+@dataclass(slots=True)
+class SearchOverrides:
+    phase1_islands: int | None = None
+    phase1_pop_size: int | None = None
+    phase1_generations: int | None = None
+    phase1_rounds: int | None = None
+    phase2_seed_count: int | None = None
+    phase2_pop_size: int | None = None
+    phase2_generations: int | None = None
+    phase3_candidate_count: int | None = None
+    phase3_compass_fevals: int | None = None
+    archive_top_n: int | None = None
+    log_frequency: int | None = None
+
+    def to_dict(self) -> dict[str, int]:
+        return {
+            key: int(value)
+            for key, value in asdict(self).items()
+            if value is not None
+        }
 
 
 @dataclass(slots=True)
@@ -33,6 +57,8 @@ class SequenceConfig:
     dense_output_samples_per_leg: int = 128
     notes: str = ""
     metadata: dict[str, str] = field(default_factory=dict)
+    search_overrides: SearchOverrides | None = None
+    seed_candidate_paths: list[str] = field(default_factory=list)
 
     @property
     def vinf_kms_max(self) -> float:
@@ -42,25 +68,6 @@ class SequenceConfig:
         data = asdict(self)
         data["vinf_kms_max"] = self.vinf_kms_max
         return data
-
-
-@dataclass(slots=True)
-class ComputeProfile:
-    level: int
-    phase1_islands: int
-    phase1_pop_size: int
-    phase1_generations: int
-    phase1_rounds: int
-    phase2_seed_count: int
-    phase2_pop_size: int
-    phase2_generations: int
-    phase3_candidate_count: int
-    phase3_compass_fevals: int
-    archive_top_n: int
-    log_frequency: int = 1
-
-    def to_dict(self) -> dict:
-        return asdict(self)
 
 
 def load_sequence_config(path: str | Path) -> SequenceConfig:
@@ -79,6 +86,26 @@ def load_sequence_config(path: str | Path) -> SequenceConfig:
             minimum_days=float(raw["tof_total_days"]["min"]),
             maximum_days=float(raw["tof_total_days"]["max"]),
         )
+    search_overrides = None
+    if "search" in raw:
+        search_raw = raw["search"]
+        search_overrides = SearchOverrides(
+            phase1_islands=int(search_raw["phase1_islands"]) if "phase1_islands" in search_raw else None,
+            phase1_pop_size=int(search_raw["phase1_pop_size"]) if "phase1_pop_size" in search_raw else None,
+            phase1_generations=int(search_raw["phase1_generations"]) if "phase1_generations" in search_raw else None,
+            phase1_rounds=int(search_raw["phase1_rounds"]) if "phase1_rounds" in search_raw else None,
+            phase2_seed_count=int(search_raw["phase2_seed_count"]) if "phase2_seed_count" in search_raw else None,
+            phase2_pop_size=int(search_raw["phase2_pop_size"]) if "phase2_pop_size" in search_raw else None,
+            phase2_generations=int(search_raw["phase2_generations"]) if "phase2_generations" in search_raw else None,
+            phase3_candidate_count=int(search_raw["phase3_candidate_count"]) if "phase3_candidate_count" in search_raw else None,
+            phase3_compass_fevals=int(search_raw["phase3_compass_fevals"]) if "phase3_compass_fevals" in search_raw else None,
+            archive_top_n=int(search_raw["archive_top_n"]) if "archive_top_n" in search_raw else None,
+            log_frequency=int(search_raw["log_frequency"]) if "log_frequency" in search_raw else None,
+        )
+    seed_candidate_paths = [
+        str(resolve_support_path(cfg_path, raw_path))
+        for raw_path in raw.get("seed_candidate_paths", [])
+    ]
     config = SequenceConfig(
         name=raw["name"],
         label=raw["label"],
@@ -99,9 +126,35 @@ def load_sequence_config(path: str | Path) -> SequenceConfig:
         dense_output_samples_per_leg=int(raw.get("dense_output_samples_per_leg", 128)),
         notes=raw.get("notes", ""),
         metadata=dict(raw.get("metadata", {})),
+        search_overrides=search_overrides,
+        seed_candidate_paths=seed_candidate_paths,
     )
     validate_sequence_config(config)
     return config
+
+
+def resolve_support_path(cfg_path: Path, raw_path: str) -> Path:
+    candidate = Path(raw_path)
+    if candidate.is_absolute():
+        return candidate
+
+    relative_to_config = (cfg_path.parent / candidate).resolve()
+    if relative_to_config.exists():
+        return relative_to_config
+
+    project_root = Path(__file__).resolve().parents[1]
+    relative_to_project_configs = (project_root / "configs" / candidate).resolve()
+    if relative_to_project_configs.exists():
+        return relative_to_project_configs
+
+    return relative_to_config
+
+
+def build_search_profile(config: SequenceConfig, level: int) -> ComputeProfile:
+    profile = build_compute_profile(level)
+    if config.search_overrides is None:
+        return profile
+    return override_compute_profile(profile, **config.search_overrides.to_dict())
 
 
 def validate_sequence_config(config: SequenceConfig) -> None:
@@ -117,6 +170,13 @@ def validate_sequence_config(config: SequenceConfig) -> None:
         raise ValueError("`max_total_tof_days` must be positive.")
     if config.tof_encoding not in {"direct", "alpha", "eta"}:
         raise ValueError("`tof_encoding` must be one of `direct`, `alpha`, or `eta`.")
+    if config.search_overrides is not None:
+        for key, value in config.search_overrides.to_dict().items():
+            if value <= 0:
+                raise ValueError(f"`search.{key}` must be positive when provided.")
+    for seed_candidate_path in config.seed_candidate_paths:
+        if not Path(seed_candidate_path).is_file():
+            raise ValueError(f"Seed candidate path does not exist: {seed_candidate_path}")
 
     if config.tof_encoding == "direct":
         if len(config.tof_days) != len(config.bodies) - 1:
@@ -160,23 +220,3 @@ def validate_sequence_config(config: SequenceConfig) -> None:
                 "`eta` encoding only supports an upper total TOF bound in pykep. "
                 "Do not provide a positive `tof_total_days.min`."
             )
-
-
-def build_compute_profile(level: int) -> ComputeProfile:
-    if not 1 <= level <= 10:
-        raise ValueError("Compute level must be between 1 and 10.")
-
-    return ComputeProfile(
-        level=level,
-        phase1_islands=4 * level,
-        phase1_pop_size=8 + 4 * level,
-        phase1_generations=50 * level,
-        phase1_rounds=1 + level,
-        phase2_seed_count=max(4, 6 * level),
-        phase2_pop_size=8 + 4 * level,
-        phase2_generations=100 * level,
-        phase3_candidate_count=max(1, min(2 * level, 12)),
-        phase3_compass_fevals=5_000 * level * level,
-        archive_top_n=max(25, 25 * level),
-        log_frequency=1,
-    )

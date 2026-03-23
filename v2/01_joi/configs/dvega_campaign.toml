@@ -1,0 +1,42 @@
+name = "dvega"
+label = "02 Delta-V EGA"
+bodies = ["earth", "earth", "jupiter"]
+departure_start = "2030-01-01 00:00:00"
+departure_end = "2038-01-01 00:00:00"
+vinf_kms_min = 0.0
+max_c3_kms2 = 15.0
+max_total_tof_days = 3652.5
+objective = "total_dsm"
+tof_encoding = "direct"
+add_vinf_dep = false
+add_vinf_arr = false
+multi_objective = false
+top_n = 100
+dense_output_samples_per_leg = 128
+notes = "Bounded DVEGA recovery campaign under C3 <= 15. Seeds from the current feasible v2 incumbent rather than the old v1 winner, which is outside the allowed C3 envelope."
+seed_candidate_paths = ["../incumbents/dvega_v2_rank1.json"]
+
+[[tof_days]]
+min = 120
+max = 1800
+
+[[tof_days]]
+min = 500
+max = 1850
+
+[search]
+phase1_islands = 80
+phase1_pop_size = 48
+phase1_generations = 600
+phase1_rounds = 10
+phase2_seed_count = 80
+phase2_pop_size = 48
+phase2_generations = 1500
+phase3_candidate_count = 16
+phase3_compass_fevals = 600000
+archive_top_n = 100
+log_frequency = 4
+
+[metadata]
+family = "ega"
+reference = "bounded incumbent-seeded DVEGA recovery campaign under the v2 C3 cap"

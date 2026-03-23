@@ -1,0 +1,23 @@
+[aws]
+region = "us-east-2"
+project_name = "minos-joi"
+stack_name = "minos-joi-batch"
+batch_job_queue = "minos-joi-job-queue"
+batch_job_definition = "minos-joi-job-definition"
+artifacts_bucket = "replace-with-your-joi-artifacts-bucket"
+artifacts_prefix = "joi-runs"
+job_name_prefix = "joi"
+submission_dir = "v2/01_joi/cloud-submissions"
+active_job_ledger_path = "v2/cloud_runs_active.csv"
+completed_job_ledger_path = "v2/cloud_runs_done.csv"
+job_vcpus = 8
+job_memory_mib = 16384
+max_vcpus = 64
+instance_types = ["c7i.2xlarge", "c7i.4xlarge", "c7i.8xlarge", "c7i.12xlarge", "c7a.2xlarge", "c7a.4xlarge", "c7a.8xlarge", "c7a.12xlarge", "c6i.2xlarge", "c6i.4xlarge", "c6i.8xlarge", "c6i.12xlarge"]
+vpc_id = "vpc-xxxxxxxxxxxxxxxxx"
+subnet_ids = ["subnet-aaaaaaaaaaaaaaaaa", "subnet-bbbbbbbbbbbbbbbbb", "subnet-ccccccccccccccccc"]
+associate_app_registry = false
+app_registry_application = "app-or-name"
+app_registry_application_arn = "arn:aws:servicecatalog:region:account:/applications/xxxxxxxxxxxxxxxxxxxxxx"
+cloudformation_template = "v2/shared/cloud/aws_batch_stack.yaml"
+ecr_image_tag = "latest"
