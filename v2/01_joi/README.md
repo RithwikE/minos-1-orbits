@@ -1,5 +1,7 @@
 # Earth To Jupiter Search
 
+Canonical `v2` architecture and workflow documentation now lives in `v2/README.md`. Use this file as mission-specific background, but prefer the top-level `v2` readme for current code structure and workflow guidance.
+
 This directory is for the Earth-to-Jupiter search only. It ends at Jupiter arrival and reports the quantities needed for later JOI analysis.
 
 ## Main Goals

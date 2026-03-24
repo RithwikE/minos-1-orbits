@@ -9,6 +9,13 @@ wheels/
 # Virtual environments
 .venv
 
+# Local environment and credential material
+.env
+.env.*
+.aws/
+*.pem
+*.key
+
 kernels/
 
 # Generated JOI search outputs
