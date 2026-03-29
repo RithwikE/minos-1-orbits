@@ -1,0 +1,17 @@
+[weights]
+total_dsm_kms = 0.40
+total_tof_years = 0.15
+c3_kms2 = 0.35
+arrival_vinf_kms = 0.05
+departure_date = 0.05
+
+[limits]
+total_dsm_kms_max = 1
+total_tof_years_max = 8.0
+c3_kms2_max = 15
+departure_date_min = "2032-01-01"
+
+[selection]
+top_n = 6
+annotate_top_n = 6
+dedupe_exact_repeats = true

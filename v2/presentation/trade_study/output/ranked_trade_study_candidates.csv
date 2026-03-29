@@ -1,0 +1,7 @@
+family,seed,rank_within_seed,departure_date,total_dsm_kms,total_tof_years,c3_kms2,arrival_vinf_kms,score_total,detail_json_path
+VEEGA,seed42,1,2034-04-02,0.612574,7.154345,15.000000,5.768457,0.539296,/Users/ike/Desktop/Purdue/2025-2026/AAE450/minos-1-orbits-cloud-arch/v2/good_results/veega/veega_batches/seed42/candidate_details/rank_001.json
+VEEGA,seed314,4,2034-07-05,0.898494,6.792941,9.183156,5.843297,0.518387,/Users/ike/Desktop/Purdue/2025-2026/AAE450/minos-1-orbits-cloud-arch/v2/good_results/veega/veega_batches/seed314/candidate_details/rank_004.json
+VEEGA,seed314,1,2034-05-23,0.700698,6.807215,15.000000,6.074017,0.444759,/Users/ike/Desktop/Purdue/2025-2026/AAE450/minos-1-orbits-cloud-arch/v2/good_results/veega/veega_batches/seed314/candidate_details/rank_001.json
+VEEGA,seed42,2,2034-06-15,0.807614,7.420664,11.265056,5.492493,0.412510,/Users/ike/Desktop/Purdue/2025-2026/AAE450/minos-1-orbits-cloud-arch/v2/good_results/veega/veega_batches/seed42/candidate_details/rank_002.json
+VEEGA,seed314,2,2034-05-26,0.771302,6.970062,14.756732,5.731840,0.349909,/Users/ike/Desktop/Purdue/2025-2026/AAE450/minos-1-orbits-cloud-arch/v2/good_results/veega/veega_batches/seed314/candidate_details/rank_002.json
+VEEGA,seed314,3,2034-06-22,0.869886,6.786813,15.000000,5.955663,0.207114,/Users/ike/Desktop/Purdue/2025-2026/AAE450/minos-1-orbits-cloud-arch/v2/good_results/veega/veega_batches/seed314/candidate_details/rank_003.json

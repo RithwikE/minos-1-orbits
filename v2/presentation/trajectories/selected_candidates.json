@@ -1,0 +1,12 @@
+{
+  "42_1": {
+    "id": "42_1",
+    "label": "VEEGA seed42 rank1",
+    "candidate_json": "v2/good_results/veega/veega_batches/seed42/candidate_details/rank_001.json"
+  },
+  "314_4": {
+    "id": "314_4",
+    "label": "VEEGA seed314 rank4",
+    "candidate_json": "v2/good_results/veega/veega_batches/seed314/candidate_details/rank_004.json"
+  }
+}

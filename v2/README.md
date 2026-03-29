@@ -16,8 +16,10 @@
 v2/
 ├── 01_joi/         Earth-to-Jupiter optimization package and mission-specific CLI entrypoints
 ├── good_results/   Curated fetched or copied result archives plus trade-study helpers
-├── scratch/        One-off analysis scripts that operate on saved artifacts
+├── presentation/scratch/        One-off analysis scripts that operate on saved artifacts
 └── shared/         Reusable search, container, runtime, and AWS Batch infrastructure
+
+and /presentation
 ```
 
 ### `01_joi/`

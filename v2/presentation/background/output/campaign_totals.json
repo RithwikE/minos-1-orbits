@@ -1,0 +1,60 @@
+{
+  "totals": {
+    "run_count": 6,
+    "family_count": 2,
+    "seed_count": 3,
+    "families": [
+      "dvega",
+      "veega"
+    ],
+    "seeds": [
+      42,
+      314,
+      2718
+    ],
+    "runtime_seconds": 61618.931135506995,
+    "evaluation_total": 1026119268,
+    "evaluation_phase1": 146529888,
+    "evaluation_phase2": 65898912,
+    "evaluation_phase3": 813690468,
+    "archive_size": 234994,
+    "archive_problem_feasible_count": 234994,
+    "archive_mission_feasible_count": 234994,
+    "archive_fully_feasible_count": 234994,
+    "top_candidate_count": 600,
+    "detail_file_count": 600,
+    "detail_event_count": 4200,
+    "detail_leg_count": 1800,
+    "detail_dense_sample_count": 231000
+  },
+  "per_family": [
+    {
+      "family_key": "dvega",
+      "family_label": "02 Delta-V EGA",
+      "run_count": 3,
+      "seeds": "42,314,2718",
+      "runtime_seconds": 16561.154296267,
+      "evaluation_total": 410750619,
+      "archive_size": 118613,
+      "archive_fully_feasible_count": 118613,
+      "detail_dense_sample_count": 77100,
+      "best_total_dsm_kms": 1.9613965200915968,
+      "best_total_tof_years": 5.940301992607687,
+      "best_arrival_vinf_kms": 5.652693559692161
+    },
+    {
+      "family_key": "veega",
+      "family_label": "04 VEEGA",
+      "run_count": 3,
+      "seeds": "42,314,2718",
+      "runtime_seconds": 45057.77683924,
+      "evaluation_total": 615368649,
+      "archive_size": 116381,
+      "archive_fully_feasible_count": 116381,
+      "detail_dense_sample_count": 153900,
+      "best_total_dsm_kms": 0.6125735562092628,
+      "best_total_tof_years": 7.154345050026994,
+      "best_arrival_vinf_kms": 5.768456619290831
+    }
+  ]
+}

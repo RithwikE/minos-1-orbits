@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1500" height="720" viewBox="0 0 1500 720">
+<style>
+text { font-family: Arial, sans-serif; fill: #14213d; }
+.title { font-size: 34px; font-weight: 700; }
+.subtitle { font-size: 18px; fill: #44556b; }
+.box { fill: #f8fafc; stroke: #cbd5e1; stroke-width: 2; rx: 18; ry: 18; }
+.step { font-size: 24px; font-weight: 700; }
+.body { font-size: 17px; fill: #334155; }
+.metric { font-size: 38px; font-weight: 700; }
+.metric-label { font-size: 18px; fill: #475569; }
+.small { font-size: 15px; fill: #64748b; }
+</style>
+<rect x="0" y="0" width="1500" height="720" fill="#ffffff"/>
+<text class="title" x="70" y="70">Earth-to-Jupiter Search Workflow</text>
+<text class="subtitle" x="70" y="105">Config -> search -> archive -> trade study -> chosen trajectory analysis</text>
+<line x1="318" y1="270" x2="342" y2="270" stroke="#94a3b8" stroke-width="6" stroke-linecap="round"/>
+<polygon points="342,270 322,258 322,282" fill="#94a3b8"/>
+<line x1="598" y1="270" x2="622" y2="270" stroke="#94a3b8" stroke-width="6" stroke-linecap="round"/>
+<polygon points="622,270 602,258 602,282" fill="#94a3b8"/>
+<line x1="878" y1="270" x2="902" y2="270" stroke="#94a3b8" stroke-width="6" stroke-linecap="round"/>
+<polygon points="902,270 882,258 882,282" fill="#94a3b8"/>
+<line x1="1158" y1="270" x2="1182" y2="270" stroke="#94a3b8" stroke-width="6" stroke-linecap="round"/>
+<polygon points="1182,270 1162,258 1162,282" fill="#94a3b8"/>
+<rect class="box" x="70" y="190" width="240" height="160"/>
+<text class="step" x="88" y="228">1. Config</text>
+<text class="body" x="88" y="270">Sequence, bounds,</text>
+<text class="body" x="88" y="294">search overrides,</text>
+<text class="body" x="88" y="318">seed incumbents</text>
+<rect class="box" x="350" y="190" width="240" height="160"/>
+<text class="step" x="368" y="228">2. Search</text>
+<text class="body" x="368" y="270">pykep problem +</text>
+<text class="body" x="368" y="294">3-phase pygmo</text>
+<text class="body" x="368" y="318">optimization</text>
+<rect class="box" x="630" y="190" width="240" height="160"/>
+<text class="step" x="648" y="228">3. Archive</text>
+<text class="body" x="648" y="270">All candidates,</text>
+<text class="body" x="648" y="294">run summary,</text>
+<text class="body" x="648" y="318">top details</text>
+<rect class="box" x="910" y="190" width="240" height="160"/>
+<text class="step" x="928" y="228">4. Trade Study</text>
+<text class="body" x="928" y="270">Cross-seed tables</text>
+<text class="body" x="928" y="294">and family</text>
+<text class="body" x="928" y="318">comparison</text>
+<rect class="box" x="1190" y="190" width="240" height="160"/>
+<text class="step" x="1208" y="228">5. Chosen Analysis</text>
+<text class="body" x="1208" y="270">Trajectory plots,</text>
+<text class="body" x="1208" y="294">DSM tables,</text>
+<text class="body" x="1208" y="318">follow-on analysis</text>
+<text class="subtitle" x="70" y="440">Why this workflow mattered</text>
+<circle cx="90" cy="483" r="8" fill="#fca311"/>
+<text class="step" x="115" y="490">Config files</text>
+<text class="body" x="320" y="490">Mission family, TOF bounds, C3 cap, campaign budget</text>
+<circle cx="90" cy="545" r="8" fill="#fca311"/>
+<text class="step" x="115" y="552">Search outputs</text>
+<text class="body" x="320" y="552">Progress checkpoints and evaluation counts while the run is active</text>
+<circle cx="90" cy="607" r="8" fill="#fca311"/>
+<text class="step" x="115" y="614">Detailed archive</text>
+<text class="body" x="320" y="614">Reconstructed events, legs, and dense samples for top candidates</text>
+</svg>
